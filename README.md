@@ -36,9 +36,9 @@ Pass: password
 Main user interface for uploading exposure files and running analysis.
 
 
-####[API Swagger UI](http://localhost:8000/) --- *localhost:8000*
+#### [API Swagger UI](http://localhost:8000/) --- *localhost:8000*
 Interactive API which lists and documents all endpoints. 
-####[API Admin Panel](http://localhost:8000/admin) --- *localhost:8000/admin*
+#### [API Admin Panel](http://localhost:8000/admin) --- *localhost:8000/admin*
 Admin interface to edit the database backing the API, allows access to create new users and update passwords.
 
 
