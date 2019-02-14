@@ -49,18 +49,15 @@ Admin interface to edit the database backing the API, allows access to create ne
 
 ## Exposure inputs
 
-This Beta example only supports the Open Exposure Data (OED) standard as exposure inputs. To view the full specification see:  [Open Exposure Data](https://github.com/Simplitium/OED)
+This Beta example only supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard as exposure inputs.
 
 Example files are avalible for the PiWind model:
 
-* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA)
-* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceAccOEDPiWind.csv?token=AJbotXImZFbEH21jJP8yd6CxCULvTkQSks5cboSywA)
-* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA)
-* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA)
+* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA) --- Locations Data
+* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceAccOEDPiWind.csv?token=AJbotXImZFbEH21jJP8yd6CxCULvTkQSks5cboSywA) --- Accounts Data
+* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA) --- Reisurance Info 
+* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA) --- Reinsurance Scope 
 
-
-## Exposure format (OED SPEC)
-[Example Location Exposure]()
 
 
 ## Troubleshooting 
