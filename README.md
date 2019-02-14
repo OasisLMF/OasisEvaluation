@@ -47,6 +47,17 @@ Interactive API which lists and documents all endpoints.
 Admin interface to edit the database backing the API, allows access to create new users and update passwords.
 
 
+## Exposure inputs
+
+This Beta example only supports the Open Exposure Data (OED) standard as exposure inputs. To view the full specification see:  [Open Exposure Data](https://github.com/Simplitium/OED)
+
+Example files are avalible under the example_files.  
+
+[example_files/SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA)
+[example_files/SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceAccOEDPiWind.csv?token=AJbotXImZFbEH21jJP8yd6CxCULvTkQSks5cboSywA)
+[example_files/SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA)
+[example_files/SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA)
+
 
 ## Exposure format (OED SPEC)
 [Example Location Exposure]()
