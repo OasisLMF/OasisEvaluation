@@ -5,7 +5,9 @@
 The Oasis Platform 1.0.0 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
 Windows SQL server is no longer a strict requirement.
 The platform can be run via docker containers on a single machine or, if required, scaled up to run on a cluster.
-Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. 
+
+Docker support is the main requirement for running the platform.
+A Linux is the main focus of this example Evaluation deployment. 
 Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
