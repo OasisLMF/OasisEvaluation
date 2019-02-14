@@ -5,8 +5,18 @@ The shift to Oasis Platform 1.0.0 represents a significant shift in architecture
 
 Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. Running the install script from this repository automates install process of the **OasisPlatform API 1.0.0**, **User Interface** and example **PiWind model**. 
 
+## Install Prerequisites
+Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
+For this example we’ve used [Docker compose](https://docs.docker.com/compose/)
 
-### Instalation Steps
+## Cloud Provisioning 
+PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of a model hosted on the platform. 
+
+* For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
+* To host on Azure use a *Standard_B2s* or larger instance 
+  
+
+## Instalation Steps
 
 1) install git, docker and docker-compose
 
