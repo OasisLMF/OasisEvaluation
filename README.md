@@ -43,7 +43,7 @@ sudo ./install.sh
 * [(UI) shiny_proxy](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_proxy) - The shiny-proxy host which creates a new UI session for each incoming connection request.
 * [(UI) oasisui_app](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_app) - The R-Shiny application container running the Oasis UI.
 * [(API) server](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - The API server which is based on Django REST framework.
-* [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model workers  and updates the API database with a workers current status.
+* [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model_workers and pushes status updates to the API.
 * [(API) worker](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/model_worker) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
 
 
