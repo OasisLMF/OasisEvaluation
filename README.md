@@ -172,9 +172,3 @@ e2b36b1bf91c        rabbitmq:3-management            "docker-entrypoint.s…"   
 
 
 
-
-
-
-
-
-## Configuration 
