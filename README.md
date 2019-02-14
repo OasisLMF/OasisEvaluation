@@ -1,21 +1,23 @@
-Oasis Evaluation 1.0.0 Release 
---------------------------------
+<img src="https://oasislmf.org/packages/oasis_theme_package/themes/oasis_theme/assets/src/oasis-lmf-colour.png" alt="Oasis LMF logo" width="250"/>
 
-The shift to Oasis Platform 1.0.0 represents a significant shift in architecture, since the Windows SQL server is no longer required the entire platform can be run via docker containers on a single machine or, if required, scaled up in size to run on a container orchestration based system such as [kubernetes](https://kubernetes.io).
+# Oasis Evaluation 1.0.0 Release 
 
-Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
+The sOasis Platform 1.0.0 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
+Windows SQL server is no longer a strict requirement.
+The platform can be run via docker containers on a single machine or, if required, scaled up to run on a cluster.
+Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. 
+Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
 * Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
 * For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script
 
 ## Cloud Provisioning 
-PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of a model hosted on the platform. 
+PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of the models hosted on the platform. 
 
 * For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
 * To host on Azure use a *Standard_B2s* or larger instance 
   
-
 ## Installation Steps
 
 1) install git, docker and docker-compose
@@ -25,7 +27,6 @@ For example on an Ubuntu/Debian based Linux system use:
 sudo apt update && sudo apt install git docker docker-compose 
 ```
 
- 
 2) Clone this repository 
 ```
 git clone https://github.com/OasisLMF/OasisEvaluation.git 
@@ -37,7 +38,6 @@ sudo ./install.sh
 ```
 > Note: sudo is not required if the Dcoker [post-install steps](https://docs.docker.com/install/linux/linux-postinstall/) are followed to run docker as a non-root user.
 
-
 #### Oasis Docker Components 
 
 * [(UI) shiny_proxy](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_proxy) - The shiny-proxy host which creates a new UI session for each incoming connection request.
@@ -46,12 +46,10 @@ sudo ./install.sh
 * [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model_workers and pushes status updates to the API.
 * [(API) worker](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/model_worker) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
 
-
 #### External Docker Components 
 * [(API) server-db](https://hub.docker.com/_/mysql) - MySQL database for the Django API Server 
 * [(API) celery-db](https://hub.docker.com/_/mysql) - MySQL database for Celery
 * [(API) rabbit](https://hub.docker.com/_/rabbitmq) - message broker
-
 
 ## Web interfaces 
 On installation a single admin account is created which is used to access the following web interfaces.
@@ -60,8 +58,6 @@ On installation a single admin account is created which is used to access the fo
 User: admin
 Pass: password
 ```
-
-
 
 ### [OasisUI Interface](http://localhost:8080/app/BFE_RShiny) - *localhost:8080/app/BFE_RShiny* 
 ![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasisui.png)
@@ -74,8 +70,7 @@ Pass: password
 
 ## Exposure inputs
 
-This Beta example only supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard as exposure inputs.
-
+The Oasis platform supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard for importing exposure.
 Example files are available for the PiWind model:
 
 * [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA) --- Locations Data
@@ -83,18 +78,10 @@ Example files are available for the PiWind model:
 * [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA) --- Reinsurance Info 
 * [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA) --- Reinsurance Scope 
 
-
-
-
-
-
 ## Troubleshooting 
 Feedback and error reports are invaluable for improving the stability and performance of the Oasis Platform, If you encounter an issue please consider [submitting an issue here](https://github.com/OasisLMF/OasisPlatform/issues)
 
-
-
 #### Viewing logs 
-
 
 `docker logs oasisplatform_worker_1`
 ```
@@ -124,8 +111,6 @@ INFO 2019-02-14 12:15:07,339 generators 68 139841283544896 view <class 'src.serv
 
 ...
 ```
-
-
 `docker logs oasisplatform_worker-monitor_1`
 ```
 [2019-02-14 11:23:39,709: INFO/MainProcess] Connected to amqp://rabbit:**@rabbit:5672//
@@ -148,9 +133,6 @@ User information: uid=0 euid=0 gid=0 egid=0
 ...
 ```
 
-
-
-
 #### Checking that the containers are up
                                             
 `docker ps -a`
@@ -168,7 +150,3 @@ e2b36b1bf91c        rabbitmq:3-management            "docker-entrypoint.s…"   
                                                                      oasisui_proxy
 
 ```
-
-
-
-
