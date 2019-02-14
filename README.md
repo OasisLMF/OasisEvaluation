@@ -39,13 +39,15 @@ Pass: password
 
 #### [OasisUI Interface](http://localhost:8080) --- *localhost:8080* 
 Main user interface for uploading exposure files and running analysis.
-
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasisui.png)
 
 #### [API Swagger UI](http://localhost:8000/) --- *localhost:8000*
 Interactive API which lists and documents all endpoints. 
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/api_swagger.png)
+
 #### [API Admin Panel](http://localhost:8000/admin) --- *localhost:8000/admin*
 Admin interface to edit the database backing the API, allows access to create new users and update passwords.
-
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/admin_panel.png)
 
 ## Exposure inputs
 
