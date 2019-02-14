@@ -3,7 +3,7 @@ Oasis Evaluation 1.0.0 Release
 
 The shift to Oasis Platform 1.0.0 represents a significant shift in architecture, since the Windows SQL server is no longer required the entire platform can be run via docker containers on a single machine or, if required, scaled up in size to run on a container orchestration based system such as [kubernetes](https://kubernetes.io).
 
-Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. Running the install script from this repository automates install process of the **OasisPlatform API 1.0.0**, **User Interface** and example **PiWind model**. 
+Docker support is the main requirement for running the platform, this is generally limited to Linux so that is the main focus of this example Evaluation deployment. Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
 * Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
