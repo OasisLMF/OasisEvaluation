@@ -54,7 +54,7 @@ sudo ./install.sh
 
 
 ## Web interfaces 
-On installation a single admin account is created which is used to accessing the following web interfaces.
+On installation a single admin account is created which is used to access the following web interfaces.
 
 ```
 User: admin
