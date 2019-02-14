@@ -53,6 +53,8 @@ Admin interface to edit the database backing the API, allows access to create ne
 
 
 ## Troubleshooting 
+Feedback and error reports are invaluable for improving the stability and performance of the Oasis Platform, If you encounter an issue please consider [submitting an issue here](https://github.com/OasisLMF/OasisPlatform/issues)
+
 ### Checking that the containers are up
 
 
