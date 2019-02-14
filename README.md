@@ -16,7 +16,7 @@ PiWind is an example Toy model so only requires a small to medium sized Instance
 * To host on Azure use a *Standard_B2s* or larger instance 
   
 
-## Instalation Steps
+## Installation Steps
 
 1) install git, docker and docker-compose
 
@@ -31,17 +31,17 @@ apt update && apt install git docker docker-compose
 git clone https://github.com/OasisLMF/OasisEvaluation.git 
 cd OasisEvaluation
 ```
-3) Run the depoyment script 
+3) Run the deployment script 
 ```
 ./install.sh
 ```
 
 #### Oasis Docker Components 
 
-* [(UI) shiny_proxy](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_proxy) - The shiny-proxy host which creates a new UI session for each incomming connection request.
-* [(UI) oasisui_app](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_app) - The R-Shiny appliction container running the Oasis UI.
+* [(UI) shiny_proxy](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_proxy) - The shiny-proxy host which creates a new UI session for each incoming connection request.
+* [(UI) oasisui_app](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_app) - The R-Shiny application container running the Oasis UI.
 * [(API) server](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - The API server which is based on Django REST framework.
-* [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model workers  and updats the API database with a workers current status.
+* [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model workers  and updates the API database with a workers current status.
 * [(API) worker](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/model_worker) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
 
 
@@ -74,11 +74,11 @@ Pass: password
 
 This Beta example only supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard as exposure inputs.
 
-Example files are avalible for the PiWind model:
+Example files are available for the PiWind model:
 
 * [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA) --- Locations Data
 * [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceAccOEDPiWind.csv?token=AJbotXImZFbEH21jJP8yd6CxCULvTkQSks5cboSywA) --- Accounts Data
-* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA) --- Reisurance Info 
+* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA) --- Reinsurance Info 
 * [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA) --- Reinsurance Scope 
 
 
