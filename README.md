@@ -7,7 +7,7 @@ Docker support is the main requirement for running the platform, this is general
 
 ## Install Prerequisites
 * Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
-* For this example we’ve used [Docker compose](https://docs.docker.com/compose/)
+* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script
 
 ## Cloud Provisioning 
 PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of a model hosted on the platform. 
