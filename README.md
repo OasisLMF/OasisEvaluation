@@ -22,7 +22,7 @@ PiWind is an example Toy model so only requires a small to medium sized Instance
 
 For example on an Ubuntu/Debian based Linux system use:
 ```
-apt update && apt install git docker docker-compose 
+sudo apt update && sudo apt install git docker docker-compose 
 ```
 
  
@@ -33,8 +33,10 @@ cd OasisEvaluation
 ```
 3) Run the deployment script 
 ```
-./install.sh
+sudo ./install.sh
 ```
+> Note: sudo is not required if the [Linux post-install](https://docs.docker.com/install/linux/linux-postinstall/) steps are followed
+
 
 #### Oasis Docker Components 
 
