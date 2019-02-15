@@ -7,7 +7,7 @@ Windows SQL server is no longer a strict requirement.
 The platform can be run via docker containers on a single machine or, if required, scaled up to run on a cluster.
 
 Docker support is the main requirement for running the platform.
-A Linux is the main focus of this example Evaluation deployment. 
+A Linux based installation is the main focus of this example Evaluation deployment. 
 Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
 
 ## Install Prerequisites
@@ -42,11 +42,11 @@ sudo ./install.sh
 
 #### Oasis Docker Components 
 
-* [(UI) shiny_proxy](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_proxy) - The shiny-proxy host which creates a new UI session for each incoming connection request.
-* [(UI) oasisui_app](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/oasisui_app) - The R-Shiny application container running the Oasis UI.
-* [(API) server](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - The API server which is based on Django REST framework.
-* [(API) worker-monitor](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/api_server) - Celery worker which watches all connected model_workers and pushes status updates to the API.
-* [(API) worker](https://cloud.docker.com/u/coreoasis/repository/docker/coreoasis/model_worker) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
+* [(UI) shiny_proxy](https://hub.docker.com/r/coreoasis/oasisui_proxy/tags) - The shiny-proxy host which creates a new UI session for each incoming connection request.
+* [(UI) oasisui_app](https://hub.docker.com/r/coreoasis/oasisui_app/tags) - The R-Shiny application container running the Oasis UI.
+* [(API) server](https://hub.docker.com/r/coreoasis/api_server/tags) - The API server which is based on Django REST framework.
+* [(API) worker-monitor](https://hub.docker.com/r/coreoasis/api_server/tags) - Celery worker which watches all connected model_workers and pushes status updates to the API.
+* [(API) worker](https://hub.docker.com/r/coreoasis/model_worker/tags) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
 
 #### External Docker Components 
 * [(API) server-db](https://hub.docker.com/_/mysql) - MySQL database for the Django API Server 
