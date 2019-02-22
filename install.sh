@@ -16,7 +16,7 @@ else
     git clone --depth 1 https://github.com/OasisLMF/$GIT_UI.git -b $BRANCH_UI
 fi 
 
-# Git Clone UI
+# Git Clone API
 if [ -d $SCRIPT_DIR/$GIT_API ]; then
     cd $SCRIPT_DIR/$GIT_API
     git pull
@@ -24,7 +24,7 @@ else
     git clone --depth 1 https://github.com/OasisLMF/$GIT_API.git -b $BRANCH_API
 fi 
 
-# Git Clone UI
+# Git Clone PiWind
 if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
     git pull
