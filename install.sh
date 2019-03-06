@@ -6,7 +6,7 @@ GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
 BRANCH_UI=develop
 BRANCH_API=beta-release/1.0.0
-BRANCH_PIWIND=1.0.0-rc4
+BRANCH_PIWIND=1.0.0-rc3
 
 # Git Clone UI
 if [ -d $SCRIPT_DIR/$GIT_UI ]; then
@@ -27,7 +27,7 @@ fi
 # Git Clone PiWind
 if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
-    git pull
+    #git pull
 else
     git clone https://github.com/OasisLMF/$GIT_PIWIND.git -b $BRANCH_PIWIND
 fi 
