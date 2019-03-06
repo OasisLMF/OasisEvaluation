@@ -29,7 +29,7 @@ if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
     git pull
 else
-    git clone --depth 1 https://github.com/OasisLMF/$GIT_PIWIND.git -b $BRANCH_PIWIND
+    git clone https://github.com/OasisLMF/$GIT_PIWIND.git -b $BRANCH_PIWIND
 fi 
 cd $SCRIPT_DIR
 
