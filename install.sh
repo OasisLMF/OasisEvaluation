@@ -6,7 +6,7 @@ GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
 BRANCH_UI=develop
 BRANCH_API=beta-release/1.0.0
-BRANCH_PIWIND=master
+BRANCH_PIWIND=1.0.0-rc4
 
 # Git Clone UI
 if [ -d $SCRIPT_DIR/$GIT_UI ]; then
