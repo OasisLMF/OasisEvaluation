@@ -2,9 +2,9 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_OASIS=1.0.0
+export VERS_OASIS=1.0.1
 export VERS_UI=1.0.0-rc1
-export VERS_PIWIND=1.0.0
+export VERS_PIWIND=1.0.1
 
 GIT_UI=OasisUI
 GIT_API=OasisPlatform
@@ -21,6 +21,7 @@ GIT_PIWIND=OasisPiWind
       git clone https://github.com/OasisLMF/$GIT_UI.git -b $VERS_UI
   fi 
   
+  cd $SCRIPT_DIR
   if [ -d $SCRIPT_DIR/$GIT_API ]; then
       cd $SCRIPT_DIR/$GIT_API
       git fetch && git checkout $VERS_OASIS
@@ -29,6 +30,7 @@ GIT_PIWIND=OasisPiWind
       git clone https://github.com/OasisLMF/$GIT_API.git -b $VERS_OASIS
   fi 
   
+  cd $SCRIPT_DIR
   if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
       cd $SCRIPT_DIR/$GIT_PIWIND
       git fetch && git checkout $VERS_PIWIND
@@ -50,6 +52,8 @@ GIT_PIWIND=OasisPiWind
   cd $SCRIPT_DIR/$GIT_UI
   git checkout -- docker-compose.yml
   sed -i "s|:latest|:${VERS_UI}|g" docker-compose.yml
+  set +e
   docker network create shiny-net
+  set -e
   docker pull coreoasis/oasisui_app:$VERS_UI
   docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
