@@ -3,7 +3,7 @@ set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export VERS_OASIS=1.0.0
-export VERS_UI=1.0.0
+export VERS_UI=1.0.0-rc1
 export VERS_PIWIND=1.0.0
 
 GIT_UI=OasisUI
