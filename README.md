@@ -75,10 +75,10 @@ Pass: password
 The Oasis platform supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard for importing exposure.
 Example files are available for the PiWind model:
 
-* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceLocOEDPiWind10.csv?token=AJbotaz-o8d1bp01mc3hSHdokCrXQpxAks5cboSvwA) --- Locations Data
-* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceAccOEDPiWind.csv?token=AJbotXImZFbEH21jJP8yd6CxCULvTkQSks5cboSywA) --- Accounts Data
-* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsInfoOEDPiWind.csv?token=AJbotVOYhdlth1bALv-qrw9neW0iU8osks5cboS3wA) --- Reinsurance Info 
-* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisEvaluation/master/example_files/SourceReinsScopeOEDPiWind.csv?token=AJbotdVn3Jxvlf0l4ZWy1Y76btVtxT-gks5cboS6wA) --- Reinsurance Scope 
+* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceLocOEDPiWind10.csv) --- Locations Data
+* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceAccOEDPiWind.csv) --- Accounts Data
+* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceReinsInfoOEDPiWind.csv) --- Reinsurance Info 
+* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceReinsScopeOEDPiWind.csv) --- Reinsurance Scope 
 
 ## Troubleshooting 
 Feedback and error reports are invaluable for improving the stability and performance of the Oasis Platform, If you encounter an issue please consider [submitting an issue here](https://github.com/OasisLMF/OasisPlatform/issues)
