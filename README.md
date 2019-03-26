@@ -42,16 +42,19 @@ sudo ./install.sh
 
 #### Oasis Docker Components 
 
-* [(UI) shiny_proxy](https://hub.docker.com/r/coreoasis/oasisui_proxy/tags) - The shiny-proxy host which creates a new UI session for each incoming connection request.
-* [(UI) oasisui_app](https://hub.docker.com/r/coreoasis/oasisui_app/tags) - The R-Shiny application container running the Oasis UI.
-* [(API) server](https://hub.docker.com/r/coreoasis/api_server/tags) - The API server which is based on Django REST framework.
-* [(API) worker-monitor](https://hub.docker.com/r/coreoasis/api_server/tags) - Celery worker which watches all connected model_workers and pushes status updates to the API.
-* [(API) worker](https://hub.docker.com/r/coreoasis/model_worker/tags) - The Oasis worker which executes, model lookups, oasis files generation and ktools analysis. 
+![Oasis docker images](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_containers.png)
 
-#### External Docker Components 
-* [(API) server-db](https://hub.docker.com/_/mysql) - MySQL database for the Django API Server 
-* [(API) celery-db](https://hub.docker.com/_/mysql) - MySQL database for Celery
-* [(API) rabbit](https://hub.docker.com/_/rabbitmq) - message broker
+|Component              |Description         |Technology|
+| ---------------------:| ------------------:| --------:|
+|ShinyProxy	            |Provides multi-user support and enterprise integration features on top of a Shiny app.	|ShinyProxy|
+|OasisUI	              |The application server for the Oasis user interface, a web app.	                      |Shiny App|
+|OasisAPI	              |The application server for the Oasis API.	                                            |Django Application Server|
+|OasisAPI DB	          |The database for the Oasis API. Stores the system meta-data, but not the detailed model data, exposure data or results. 	|MySql (other options)|
+|Worker monitor	        |Monitors the model worker and updates the Oasis API database with the status of tasks.	|Custom Python code|
+|Celery - Message Queue	|Message queue for the celery job management framework.	|Rabbit MQ (other options)|
+|Celery – Backing Store	|Backing store for the celery job management framework.	|MySQL (other options)|
+|Datastore	            |File based datastore for exposure data, analysis results and model data.	|Docker volume|
+|Model Worker	          |Celery worker that can run a lookup or model execution task for a particular model version. The model data is attached to the container from the datastore at startup.	|Custom Python and C++ code|
 
 ## Web interfaces 
 On installation a single admin account is created which is used to access the following web interfaces.
@@ -152,3 +155,9 @@ e2b36b1bf91c        rabbitmq:3-management            "docker-entrypoint.s…"   
                                                                      oasisui_proxy
 
 ```
+
+#### Trying the API
+
+![Oasis API sequence](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_api_sequence.png)
+
+
