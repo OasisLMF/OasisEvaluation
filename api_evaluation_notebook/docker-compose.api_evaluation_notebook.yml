@@ -1,0 +1,9 @@
+version: '2'
+services:
+  api_evaluation_notebook:
+    build:
+      context: .
+      dockerfile: Dockerfile.ApiEvaluationNotebook 
+    network_mode: "host"
+    environment:
+      - JUPYTER_PASS=pass

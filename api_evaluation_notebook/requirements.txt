@@ -1,0 +1,2 @@
+jupyter
+git+https://git@github.com/OasisLMF/OasisLMF.git@fix/api-client#egg=oasislmf

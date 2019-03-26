@@ -1,0 +1,20 @@
+FROM python:3.6
+WORKDIR /home/run
+
+COPY ["./requirements.txt", \
+      "./apt.txt", \
+      "./data/*", \
+      "./*.ipynb", "./"]
+RUN apt-get update && apt-get install -y $(grep -vE "^\s*#" apt.txt) && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip install -r requirements.txt
+RUN rm apt.txt
+RUN rm requirements.txt
+
+COPY ./set_jupyter_password.py /usr/local/bin/
+COPY ./startup.sh /usr/local/bin/
+RUN mkdir -p /root/.jupyter/
+RUN touch /root/.jupyter/jupyter_notebook_config.json
+
+EXPOSE 8888
+ENTRYPOINT startup.sh
