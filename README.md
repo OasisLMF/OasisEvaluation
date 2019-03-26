@@ -161,7 +161,7 @@ e2b36b1bf91c        rabbitmq:3-management            "docker-entrypoint.s…"   
 
 This evaluation also includes a Jupyter notebook that accesses the API using the Oasis Python client.
 
-[API evaluatin notebook](http://localhost:8888) - *localhost:8888* (password: pass)
+[API evaluation notebook](http://localhost:8888) - *localhost:8888* (password: pass)
 
 The following sequence diagram illustrates how the general steps in the analysis, encapulated by the API client functions, map to specific API calls.
 
