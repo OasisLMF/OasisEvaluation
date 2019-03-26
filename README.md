@@ -39,7 +39,7 @@ cd OasisEvaluation
 ```
 sudo ./install.sh
 ```
-> Note: sudo is not required if the Dcoker [post-install steps](https://docs.docker.com/install/linux/linux-postinstall/) are followed to run docker as a non-root user.
+> Note: sudo is not required if the Docker [post-install steps](https://docs.docker.com/install/linux/linux-postinstall/) are followed to run docker as a non-root user.
 
 #### Oasis Docker Components 
 
