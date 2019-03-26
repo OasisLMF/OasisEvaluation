@@ -2,20 +2,21 @@
 
 # Oasis Evaluation 1.0.0 Release 
 
-The Oasis Platform 1.0.0 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
+The Oasis Platform v1 release includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
 Windows SQL server is no longer a strict requirement.
 The platform can be run via docker containers on a single machine or, if required, scaled up to run on a cluster.
 
 Docker support is the main requirement for running the platform.
-A Linux based installation is the main focus of this example Evaluation deployment. 
-Running the install script from this repository automates install process of the OasisPlatform API 1.0.0, User Interface and example PiWind model. 
+A Linux based installation is the main focus of this example deployment. 
+Running the install script from this repository automates install process of the OasisPlatform API v1, User Interface and example PiWind model. 
 
 ## Install Prerequisites
-* Host Operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
-* For this example we’ve used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script
+* Host operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
+* For this example we have used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script.
 
 ## Cloud Provisioning 
-PiWind is an example Toy model so only requires a small to medium sized Instance for demonstration. This of course will change depending on the size and complexity of the models hosted on the platform. 
+PiWind is an example model and only requires a small to medium sized Instance for demonstration. 
+This of course will change depending on the size and complexity of the models hosted on the platform. 
 
 * For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
 * To host on Azure use a *Standard_B2s* or larger instance 
@@ -44,8 +45,8 @@ sudo ./install.sh
 
 ![Oasis docker images](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_containers.png)
 
-|Component              |Description         |Technology|
-| ---------------------:| ------------------:| --------:|
+|Component              |Description         |Technology  |
+| ---------------------:| ------------------:| ----------:|
 |ShinyProxy	            |Provides multi-user support and enterprise integration features on top of a Shiny app.	|ShinyProxy|
 |OasisUI	              |The application server for the Oasis user interface, a web app.	                      |Shiny App|
 |OasisAPI	              |The application server for the Oasis API.	                                            |Django Application Server|
@@ -157,6 +158,12 @@ e2b36b1bf91c        rabbitmq:3-management            "docker-entrypoint.s…"   
 ```
 
 #### Trying the API
+
+This evaluation also includes a Jupyter notebook that accesses the API using the Oasis Python client.
+
+[API evaluatin notebook](http://localhost:8888) - *localhost:8888* (password: pass)
+
+The following sequence diagram illustrates how the general steps in the analysis, encapulated by the API client functions, map to specific API calls.
 
 ![Oasis API sequence](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_api_sequence.png)
 
