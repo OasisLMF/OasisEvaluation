@@ -2,7 +2,8 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_OASIS=1.0.1
+export VERS_API=1.0.1
+export VERS_WORKER=1.0.2-rc2
 export VERS_UI=1.0.0-rc1
 export VERS_PIWIND=1.0.1
 
@@ -44,7 +45,8 @@ fi
 cd $SCRIPT_DIR/$GIT_API
 export OASIS_MODEL_DATA_DIR=$SCRIPT_DIR/$GIT_PIWIND
 git checkout -- docker-compose.yml
-sed -i "s|:latest|:${VERS_OASIS}|g" docker-compose.yml
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
+sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
 docker-compose up -d
 
 # Run Oasis UI
