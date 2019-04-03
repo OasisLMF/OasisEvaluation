@@ -25,11 +25,11 @@ fi
 cd $SCRIPT_DIR
 if [ -d $SCRIPT_DIR/$GIT_API ]; then
     cd $SCRIPT_DIR/$GIT_API
-    git fetch && git checkout $VERS_OASIS
+    git fetch && git checkout $VERS_API
 else
     # Git Clone API
     git clone https://github.com/OasisLMF/$GIT_API.git 
-    git checkout -b $VERS_OASIS
+    git checkout -b $VERS_API
 fi 
 
 cd $SCRIPT_DIR
