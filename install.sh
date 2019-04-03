@@ -18,7 +18,8 @@ if [ -d $SCRIPT_DIR/$GIT_UI ]; then
     git fetch && git checkout $VERS_UI
 else
     # Git Clone UI
-    git clone https://github.com/OasisLMF/$GIT_UI.git -b $VERS_UI
+    git clone https://github.com/OasisLMF/$GIT_UI.git 
+    git checkout -b $VERS_UI
 fi 
 
 cd $SCRIPT_DIR
@@ -27,7 +28,8 @@ if [ -d $SCRIPT_DIR/$GIT_API ]; then
     git fetch && git checkout $VERS_OASIS
 else
     # Git Clone API
-    git clone https://github.com/OasisLMF/$GIT_API.git -b $VERS_OASIS
+    git clone https://github.com/OasisLMF/$GIT_API.git 
+    git checkout -b $VERS_OASIS
 fi 
 
 cd $SCRIPT_DIR
@@ -36,7 +38,8 @@ if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     git fetch && git checkout $VERS_PIWIND
 else
     # Git Clone PiWind
-    git clone https://github.com/OasisLMF/$GIT_PIWIND.git -b $VERS_PIWIND
+    git clone https://github.com/OasisLMF/$GIT_PIWIND.git 
+    git checkout -b $VERS_PIWIND
 fi 
 
 
