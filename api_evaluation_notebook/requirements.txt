@@ -1,2 +1,2 @@
 jupyter
-git+https://git@github.com/OasisLMF/OasisLMF.git@fix/api-client#egg=oasislmf
+git+https://git@github.com/OasisLMF/OasisLMF.git@develop#egg=oasislmf
