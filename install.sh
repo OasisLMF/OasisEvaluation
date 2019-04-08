@@ -2,8 +2,8 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_API=1.0.1
-export VERS_WORKER=1.0.2-rc2
+export VERS_API=1.0.2
+export VERS_WORKER=1.0.2
 export VERS_UI=1.0.0-rc1
 export VERS_PIWIND=ab206f849f42d46bfd58daf8bfee847654d7c33c
 GIT_UI=OasisUI
