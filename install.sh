@@ -4,8 +4,8 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export VERS_API=1.0.2
 export VERS_WORKER=1.0.2
-export VERS_UI=1.0.0-rc1
-export VERS_PIWIND=ab206f849f42d46bfd58daf8bfee847654d7c33c
+export VERS_UI=1.0.2
+export VERS_PIWIND=1.0.2
 GIT_UI=OasisUI
 GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
