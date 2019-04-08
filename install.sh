@@ -52,6 +52,9 @@ export OASIS_MODEL_DATA_DIR=$SCRIPT_DIR/$GIT_PIWIND
 git checkout -- docker-compose.yml
 sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
 sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
+set +e
+docker-compose down
+set -e
 docker-compose up -d
 
 # Run Oasis UI
