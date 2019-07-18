@@ -4,7 +4,6 @@ WORKDIR /home/run
 COPY ["./requirements.txt", \
       "./apt.txt", \
       "./data/*", \
-      "../OasisPiWind/tests/data/*", \
       "./*.ipynb", "./"]
 RUN apt-get update && apt-get install -y $(grep -vE "^\s*#" apt.txt) && \
     rm -rf /var/lib/apt/lists/*
