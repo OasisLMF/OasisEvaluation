@@ -1,0 +1,13 @@
+version: '3'
+services:
+  swagger_docs:
+    restart: always
+    container_name: swagger
+    image: ${SWAGGER_IMAGE}:${SWAGGER_TAG}
+    ports:
+     - 80:8080
+    environment:
+     - BASE_URL=/swagger
+     - SWAGGER_JSON=/tmp/${SWAGGER_SCHEMA}
+    volumes:
+     - ./:/tmp
