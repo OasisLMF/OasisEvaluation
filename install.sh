@@ -60,7 +60,8 @@ sed -i "33i\     - $SCRIPT_DIR/meta-data/piwind_model_settings.json:/var/www/oas
 set +e
 docker-compose down
 set -e
-docker-compose up -d
+docker-compose pull
+docker-compose up -d --no-build
 
 # Run Oasis UI
 cd $SCRIPT_DIR/$GIT_UI
