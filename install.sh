@@ -53,10 +53,6 @@ git checkout -- docker-compose.yml
 sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
 sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
 
-# Ver 1.4.1 model settings workaroung (Remove in next release)
-rm -f $SCRIPT_DIR/$GIT_PIWIND/meta-data/model_settings.json
-sed -i "33i\     - $SCRIPT_DIR/meta-data/piwind_model_settings.json:/var/www/oasis/src/server/static/model_resource.json" docker-compose.yml
-
 set +e
 docker-compose down
 docker-compose pull
