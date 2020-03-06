@@ -14,6 +14,7 @@ GIT_PIWIND=OasisPiWind
 # ---  OASIS UI --- # 
 if [ -d $SCRIPT_DIR/$GIT_UI ]; then
     cd $SCRIPT_DIR/$GIT_UI
+    git stash
     git fetch && git checkout $VERS_UI
 else
     mkdir -p $SCRIPT_DIR/$GIT_UI
@@ -25,6 +26,7 @@ fi
 # ---  OASIS API --- # 
 if [ -d $SCRIPT_DIR/$GIT_API ]; then
     cd $SCRIPT_DIR/$GIT_API
+    git stash
     git fetch && git checkout $VERS_API
 else
     mkdir -p $SCRIPT_DIR/$GIT_API
@@ -36,6 +38,7 @@ fi
 # ---  MODEL PiWind --- # 
 if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
+    git stash
     git fetch && git checkout $VERS_PIWIND
 else
     mkdir -p $SCRIPT_DIR/$GIT_PIWIND
