@@ -2,9 +2,10 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_API=1.8.0
-export VERS_WORKER=1.8.0
-export VERS_PIWIND=1.8.0
+export VERS_MDK=1.8.2
+export VERS_API=1.8.2
+export VERS_WORKER=1.8.2
+export VERS_PIWIND=1.8.2
 export VERS_UI=1.7.0
 GIT_UI=OasisUI
 GIT_API=OasisPlatform
@@ -74,5 +75,7 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 
 # Run API eveluation notebook
 cd $SCRIPT_DIR
+
+sed -i "s|^oasislmf.*|oasislmf==$VERS_MDK|g" api_evaluation_notebook/requirements.txt
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d

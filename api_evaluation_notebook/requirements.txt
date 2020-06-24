@@ -1,3 +1,2 @@
 jupyter
-oasislmf==1.8.0
-#git+https://git@github.com/OasisLMF/OasisLMF.git@develop#egg=oasislmf
+oasislmf
