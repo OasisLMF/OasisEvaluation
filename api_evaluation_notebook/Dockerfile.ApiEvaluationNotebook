@@ -1,14 +1,10 @@
-FROM python:3.6
+FROM coreoasis/model_worker:latest
 WORKDIR /home/run
 
 COPY ["./requirements.txt", \
-      "./apt.txt", \
       "./data/*", \
       "./*.ipynb", "./"]
-RUN apt-get update && apt-get install -y $(grep -vE "^\s*#" apt.txt) && \
-    rm -rf /var/lib/apt/lists/*
 RUN pip install -r requirements.txt
-RUN rm apt.txt
 RUN rm requirements.txt
 
 COPY ./set_jupyter_password.py /usr/local/bin/
