@@ -54,8 +54,8 @@ fi
 cd $SCRIPT_DIR/$GIT_API
 export OASIS_MODEL_DATA_DIR=$SCRIPT_DIR/$GIT_PIWIND
 git checkout -- docker-compose.yml
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
-sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" docker-compose.yml
+sed -i "s|:latest|:${VERS_API}-slim|g" docker-compose.yml
 
 set +e
 docker-compose down
@@ -76,6 +76,6 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 # Run API eveluation notebook
 cd $SCRIPT_DIR
 
-sed -i "s|^oasislmf.*|oasislmf==$VERS_MDK|g" api_evaluation_notebook/requirements.txt
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
