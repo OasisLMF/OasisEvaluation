@@ -11,8 +11,31 @@ GIT_UI=OasisUI
 GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
 
+MSG=$(cat <<-END
+Do you want to install from a clean state, this is recomended when updating the release version.
+Note: This will wipe uploaded exposure and run data from the local API.
+END
+)
 
-# ---  OASIS UI --- # 
+
+# Check for prev install and offer to clean wipe
+if [ -d $SCRIPT_DIR/$GIT_UI -o -d $SCRIPT_DIR/$GIT_API -o -d $SCRIPT_DIR/$GIT_PIWIND ]; then
+    while true; do read -r -n 1 -p "${MSG:-Continue?} [y/n]: " REPLY
+        case $REPLY in
+          [yY]) echo ; WIPE=1; break ;;
+          [nN]) echo ; WIPE=0; break ;;
+          *) printf " \033[31m %s \n\033[0m" "invalid input"
+        esac
+    done
+
+    if [[ "$WIPE" == 1 ]]; then
+        printf "Deleting: \n\t$SCRIPT_DIR/$GIT_API \n\t$SCRIPT_DIR/$GIT_UI \n\t$SCRIPT_DIR/$GIT_PIWIND\n"
+        sudo rm -rf $SCRIPT_DIR/$GIT_API $SCRIPT_DIR/$GIT_UI $SCRIPT_DIR/$GIT_PIWIND
+    fi
+
+fi
+
+# ---  OASIS UI --- #
 if [ -d $SCRIPT_DIR/$GIT_UI ]; then
     cd $SCRIPT_DIR/$GIT_UI
     git stash
@@ -20,11 +43,11 @@ if [ -d $SCRIPT_DIR/$GIT_UI ]; then
 else
     mkdir -p $SCRIPT_DIR/$GIT_UI
     cd $SCRIPT_DIR/$GIT_UI
-    git clone https://github.com/OasisLMF/$GIT_UI.git .
+    git clone --depth 1 --branch $VERS_UI https://github.com/OasisLMF/$GIT_UI.git .
     git checkout $VERS_UI
-fi 
+fi
 
-# ---  OASIS API --- # 
+# ---  OASIS API --- #
 if [ -d $SCRIPT_DIR/$GIT_API ]; then
     cd $SCRIPT_DIR/$GIT_API
     git stash
@@ -32,11 +55,11 @@ if [ -d $SCRIPT_DIR/$GIT_API ]; then
 else
     mkdir -p $SCRIPT_DIR/$GIT_API
     cd $SCRIPT_DIR/$GIT_API
-    git clone https://github.com/OasisLMF/$GIT_API.git .
+    git clone --depth 1 --branch $VERS_API https://github.com/OasisLMF/$GIT_API.git .
     git checkout $VERS_API
-fi 
+fi
 
-# ---  MODEL PiWind --- # 
+# ---  MODEL PiWind --- #
 if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
     git stash
@@ -44,10 +67,9 @@ if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
 else
     mkdir -p $SCRIPT_DIR/$GIT_PIWIND
     cd $SCRIPT_DIR/$GIT_PIWIND
-    git clone https://github.com/OasisLMF/$GIT_PIWIND.git .
+    git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
     git checkout $VERS_PIWIND
-fi 
-
+fi
 
 
 # setup and run API
@@ -76,6 +98,7 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 # Run API eveluation notebook
 cd $SCRIPT_DIR
 
+git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
