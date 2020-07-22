@@ -82,6 +82,10 @@ sed -i "s|:latest|:${VERS_API}-slim|g" docker-compose.yml
 set +e
 docker-compose down
 docker-compose pull
+
+# Workaround for older docker-compose 
+docker pull coreoasis/model_worker:${VERS_WORKER}-slim
+docker pull coreoasis/api_server:${VERS_API}-slim
 set -e
 docker-compose up -d --no-build
 
