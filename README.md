@@ -74,7 +74,7 @@ Pass: password
 ### [API Admin Panel](http://localhost:8000/admin) - *localhost:8000/admin*
 ![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/admin_panel.png)
 
-### [Portainer Docker Panel](http://localhost:9000) - *localhost:9000/admin*
+### [Portainer Docker Panel](http://localhost:9000) - *localhost:9000*
 ![alt text](https://github.com/OasisLMF/OasisAtScaleEvaluation/raw/master/.img/portainer.png)
 
 ## Exposure inputs
