@@ -106,3 +106,6 @@ git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
+
+# Run Portainer 
+docker-compose -f portainer.yaml up -d
