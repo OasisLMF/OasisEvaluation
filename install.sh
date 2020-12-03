@@ -2,11 +2,11 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_MDK=1.12.1
-export VERS_API=1.12.1
-export VERS_WORKER=1.12.1
-export VERS_PIWIND=1.12.1
-export VERS_UI=1.8.0
+export VERS_MDK=1.13.0
+export VERS_API=1.13.0
+export VERS_WORKER=1.13.0
+export VERS_PIWIND=1.13.0
+export VERS_UI=1.8.1
 GIT_UI=OasisUI
 GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
@@ -76,16 +76,16 @@ fi
 cd $SCRIPT_DIR/$GIT_API
 export OASIS_MODEL_DATA_DIR=$SCRIPT_DIR/$GIT_PIWIND
 git checkout -- docker-compose.yml
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" docker-compose.yml
-sed -i "s|:latest|:${VERS_API}-slim|g" docker-compose.yml
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
+sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
 
 set +e
 docker-compose down
 docker-compose pull
 
 # Workaround for older docker-compose 
-docker pull coreoasis/model_worker:${VERS_WORKER}-slim
-docker pull coreoasis/api_server:${VERS_API}-slim
+docker pull coreoasis/model_worker:${VERS_WORKER}
+docker pull coreoasis/api_server:${VERS_API}
 set -e
 docker-compose up -d --no-build
 
@@ -103,7 +103,7 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 cd $SCRIPT_DIR
 
 git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-slim|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
 
