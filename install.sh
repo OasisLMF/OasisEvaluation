@@ -103,7 +103,7 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 cd $SCRIPT_DIR
 
 git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
 
