@@ -2,6 +2,14 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+if [ "$(uname -s)" == "Darwin" ]; then
+    export ENV_OSX=true
+    echo "debug check - running on OSX"
+else
+    export ENV_OSX=false
+fi
+
+
 export VERS_MDK=1.16.0
 export VERS_API=1.16.0
 export VERS_WORKER=1.16.0
@@ -82,9 +90,15 @@ fi
 # setup and run API
 cd $SCRIPT_DIR
 git checkout -- oasis-platform.yml
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
-sed -i "s|:latest|:${VERS_API}|g" oasis-platform.yml
 
+# Run seds for OSX / Linux 
+if $ENV_OSX; then 
+    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
+    sed -i "" "s|:latest|:${VERS_API}|g" oasis-platform.yml
+else 
+    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
+    sed -i "s|:latest|:${VERS_API}|g" oasis-platform.yml
+fi     
 
 
 set +e
@@ -100,7 +114,15 @@ docker-compose -f oasis-platform.yml up -d --no-build
 # Run Oasis UI
 cd $SCRIPT_DIR/$GIT_UI
 git checkout -- docker-compose.yml
-sed -i "s|:latest|:${VERS_UI}|g" docker-compose.yml
+
+
+## Run seds for OSX / Linux 
+if $ENV_OSX; then 
+    sed -i "" "s|:latest|:${VERS_UI}|g" docker-compose.yml
+else
+    sed -i "s|:latest|:${VERS_UI}|g" docker-compose.yml
+fi 
+
 set +e
 docker network create shiny-net
 set -e
@@ -111,7 +133,16 @@ docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
 cd $SCRIPT_DIR
 
 git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+
+
+
+#### Run seds for OSX / Linux 
+if $ENV_OSX; then 
+    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+else    
+    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+fi 
+
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
 
