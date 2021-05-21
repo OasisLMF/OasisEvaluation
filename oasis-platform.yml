@@ -1,12 +1,12 @@
 version: '3'
 volumes:
-  server-db-data:
-  celery-db-data:
-  filestore-data: 
+  server-db-OasisData:
+  celery-db-OasisData:
+  filestore-OasisData: 
 services:
   server:
    restart: always
-   image: coreoasis/api_server:latest
+   image: coreoasis/api_server:1.16.0
    build:
      context: .
      dockerfile: Dockerfile.api_server
@@ -37,10 +37,10 @@ services:
      - OASIS_CELERY_DB_PORT=3306
      - STARTUP_RUN_MIGRATIONS=true
    volumes:
-     - filestore-data:/shared-fs:rw
+     - filestore-OasisData:/shared-fs:rw
   worker-monitor:
    restart: always
-   image: coreoasis/api_server:latest
+   image: coreoasis/api_server:1.16.0
    command: [wait-for-server, 'server:8000', celery, -A, src.server.oasisapi, worker, --loglevel=INFO]
    links:
      - server-db
@@ -64,10 +64,10 @@ services:
      - OASIS_CELERY_DB_NAME=celery
      - OASIS_CELERY_DB_PORT=3306
    volumes:
-     - filestore-data:/shared-fs:rw
+     - filestore-OasisData:/shared-fs:rw
   worker:
     restart: always
-    image: coreoasis/model_worker:latest
+    image: coreoasis/model_worker:1.16.0
     build:
       context: .
       dockerfile: Dockerfile.model_worker
@@ -91,7 +91,7 @@ services:
      - OASIS_MODEL_DATA_DIRECTORY=/home/worker/model
     volumes:
      - ./OasisPiWind/:/home/worker/model
-     - filestore-data:/shared-fs:rw
+     - filestore-OasisData:/shared-fs:rw
   server-db:
     restart: always
     image: mysql:8.0
@@ -103,7 +103,7 @@ services:
       - MYSQL_PASSWORD=oasis
       - MYSQL_DATABASE=oasis
     volumes:
-      - server-db-data:/var/lib/mysql/:rw
+      - server-db-OasisData:/var/lib/mysql/:rw
   celery-db:
     restart: always
     image: mysql
@@ -115,7 +115,7 @@ services:
       - MYSQL_PASSWORD=password
       - MYSQL_DATABASE=celery
     volumes:
-      - celery-db-data:/var/lib/mysql/:rw
+      - celery-db-OasisData:/var/lib/mysql/:rw
   rabbit:
     restart: always
     image: rabbitmq:3-management
