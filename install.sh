@@ -4,7 +4,6 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ "$(uname -s)" == "Darwin" ]; then
     export ENV_OSX=true
-    echo "debug check - running on OSX"
 else
     export ENV_OSX=false
 fi
@@ -15,9 +14,7 @@ export VERS_API=1.16.0
 export VERS_WORKER=1.16.0
 export VERS_PIWIND=1.16.0
 export VERS_UI=1.9.0
-#GIT_UI=OasisUI
 GIT_PIWIND=OasisPiWind
-#GIT_API=OasisPlatform
 
 MSG=$(cat <<-END
 Do you want to install from a clean state, this is recomended when updating the release version.
@@ -68,37 +65,32 @@ cd $SCRIPT_DIR
 git checkout -- oasis-platform.yml
 git checkout -- oasis-ui.yml
 
-# Run seds for OSX / Linux 
-if $ENV_OSX; then 
+# Run seds for OSX / Linux
+if $ENV_OSX; then
     sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
     sed -i "" "s|:latest|:${VERS_API}|g" oasis-platform.yml
     sed -i "" "s|:latest|:${VERS_UI}|g" oasis-ui.yml
-else 
+else
     sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
     sed -i "s|:latest|:${VERS_API}|g" oasis-platform.yml
     sed -i "s|:latest|:${VERS_UI}|g" oasis-ui.yml
-fi     
+fi
 
 set +e
 docker-compose -f oasis-platform.yml pull
 docker network create shiny-net
 
-# Workaround for older docker-compose 
+# Workaround for older docker-compose
 docker pull coreoasis/model_worker:${VERS_WORKER}
 docker pull coreoasis/api_server:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
 docker pull coreoasis/oasisui_proxy:$VERS_UI
 set -e
 
-# RUN platoform 
-docker-compose -f oasis-platform.yml up -d --no-build
-
-# Run UI
+# RUN OasisPlatform / OasisUI / Portainer
+docker-compose -f $SCRIPT_DIR/oasis-platform.yml up -d --no-build
 docker-compose -f $SCRIPT_DIR/oasis-ui.yml up -d
-
-# Run Portainer 
-docker-compose -f portainer.yaml up -d
-
+docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
 
 
 # --- Run API eveluation notebook ------------------------------------------- #
@@ -106,12 +98,12 @@ docker-compose -f portainer.yaml up -d
 cd $SCRIPT_DIR
 git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
 
-#### Run seds for OSX / Linux 
-if $ENV_OSX; then 
+#### Run seds for OSX / Linux
+if $ENV_OSX; then
     sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-else    
+else
     sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-fi 
+fi
 
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
