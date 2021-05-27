@@ -2,13 +2,18 @@
 set -e
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+if [ "$(uname -s)" == "Darwin" ]; then
+    export ENV_OSX=true
+else
+    export ENV_OSX=false
+fi
+
+
 export VERS_MDK=1.16.0
 export VERS_API=1.16.0
 export VERS_WORKER=1.16.0
 export VERS_PIWIND=1.16.0
 export VERS_UI=1.9.0
-GIT_UI=OasisUI
-GIT_API=OasisPlatform
 GIT_PIWIND=OasisPiWind
 
 MSG=$(cat <<-END
@@ -19,7 +24,7 @@ END
 
 
 # Check for prev install and offer to clean wipe
-if [ -d $SCRIPT_DIR/$GIT_UI -o -d $SCRIPT_DIR/$GIT_API -o -d $SCRIPT_DIR/$GIT_PIWIND ]; then
+if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
     while true; do read -r -n 1 -p "${MSG:-Continue?} [y/n]: " REPLY
         case $REPLY in
           [yY]) echo ; WIPE=1; break ;;
@@ -29,37 +34,18 @@ if [ -d $SCRIPT_DIR/$GIT_UI -o -d $SCRIPT_DIR/$GIT_API -o -d $SCRIPT_DIR/$GIT_PI
     done
 
     if [[ "$WIPE" == 1 ]]; then
-        printf "Deleting: \n\t$SCRIPT_DIR/$GIT_API \n\t$SCRIPT_DIR/$GIT_UI \n\t$SCRIPT_DIR/$GIT_PIWIND\n"
-        sudo rm -rf $SCRIPT_DIR/$GIT_API $SCRIPT_DIR/$GIT_UI $SCRIPT_DIR/$GIT_PIWIND
+        set +e
+        docker-compose -f oasis-platform.yml down
+        set -e
+        printf "Deleting docker data: \n"
+        rm -rf $SCRIPT_DIR/$GIT_PIWIND
+        docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
     fi
-
 fi
 
-# ---  OASIS UI --- #
-if [ -d $SCRIPT_DIR/$GIT_UI ]; then
-    cd $SCRIPT_DIR/$GIT_UI
-    git stash
-    git fetch && git checkout $VERS_UI
-else
-    mkdir -p $SCRIPT_DIR/$GIT_UI
-    cd $SCRIPT_DIR/$GIT_UI
-    git clone --depth 1 --branch $VERS_UI https://github.com/OasisLMF/$GIT_UI.git .
-    git checkout $VERS_UI
-fi
 
-# ---  OASIS API --- #
-if [ -d $SCRIPT_DIR/$GIT_API ]; then
-    cd $SCRIPT_DIR/$GIT_API
-    git stash
-    git fetch && git checkout $VERS_API
-else
-    mkdir -p $SCRIPT_DIR/$GIT_API
-    cd $SCRIPT_DIR/$GIT_API
-    git clone --depth 1 --branch $VERS_API https://github.com/OasisLMF/$GIT_API.git .
-    git checkout $VERS_API
-fi
+# --- Clone PiWind ---------------------------------------------------------- #
 
-# ---  MODEL PiWind --- #
 if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
     cd $SCRIPT_DIR/$GIT_PIWIND
     git stash
@@ -72,40 +58,52 @@ else
 fi
 
 
-# setup and run API
-cd $SCRIPT_DIR/$GIT_API
-export OASIS_MODEL_DATA_DIR=$SCRIPT_DIR/$GIT_PIWIND
-git checkout -- docker-compose.yml
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" docker-compose.yml
-sed -i "s|:latest|:${VERS_API}|g" docker-compose.yml
+
+# --- RUN Oasis Platform & UI ----------------------------------------------- #
+
+cd $SCRIPT_DIR
+git checkout -- oasis-platform.yml
+git checkout -- oasis-ui.yml
+
+# Run seds for OSX / Linux
+if $ENV_OSX; then
+    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
+    sed -i "" "s|:latest|:${VERS_API}|g" oasis-platform.yml
+    sed -i "" "s|:latest|:${VERS_UI}|g" oasis-ui.yml
+else
+    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
+    sed -i "s|:latest|:${VERS_API}|g" oasis-platform.yml
+    sed -i "s|:latest|:${VERS_UI}|g" oasis-ui.yml
+fi
 
 set +e
-docker-compose down
-docker-compose pull
+docker-compose -f oasis-platform.yml pull
+docker network create shiny-net
 
-# Workaround for older docker-compose 
+# Workaround for older docker-compose
 docker pull coreoasis/model_worker:${VERS_WORKER}
 docker pull coreoasis/api_server:${VERS_API}
-set -e
-docker-compose up -d --no-build
-
-# Run Oasis UI
-cd $SCRIPT_DIR/$GIT_UI
-git checkout -- docker-compose.yml
-sed -i "s|:latest|:${VERS_UI}|g" docker-compose.yml
-set +e
-docker network create shiny-net
-set -e
 docker pull coreoasis/oasisui_app:$VERS_UI
-docker-compose -f $SCRIPT_DIR/$GIT_UI/docker-compose.yml up -d
+docker pull coreoasis/oasisui_proxy:$VERS_UI
+set -e
 
-# Run API eveluation notebook
+# RUN OasisPlatform / OasisUI / Portainer
+docker-compose -f $SCRIPT_DIR/oasis-platform.yml up -d --no-build
+docker-compose -f $SCRIPT_DIR/oasis-ui.yml up -d
+docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
+
+
+# --- Run API eveluation notebook ------------------------------------------- #
+
 cd $SCRIPT_DIR
-
 git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+
+#### Run seds for OSX / Linux
+if $ENV_OSX; then
+    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+else
+    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+fi
+
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
 docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
-
-# Run Portainer 
-docker-compose -f portainer.yaml up -d
