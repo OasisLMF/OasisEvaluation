@@ -6,7 +6,7 @@ volumes:
 services:
   server:
    restart: always
-   image: coreoasis/api_server:1.16.0
+   image: coreoasis/api_server:latest
    build:
      context: .
      dockerfile: Dockerfile.api_server
@@ -40,7 +40,7 @@ services:
      - filestore-OasisData:/shared-fs:rw
   worker-monitor:
    restart: always
-   image: coreoasis/api_server:1.16.0
+   image: coreoasis/api_server:latest
    command: [wait-for-server, 'server:8000', celery, -A, src.server.oasisapi, worker, --loglevel=INFO]
    links:
      - server-db
@@ -67,7 +67,7 @@ services:
      - filestore-OasisData:/shared-fs:rw
   worker:
     restart: always
-    image: coreoasis/model_worker:1.16.0
+    image: coreoasis/model_worker:latest
     build:
       context: .
       dockerfile: Dockerfile.model_worker
