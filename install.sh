@@ -9,10 +9,10 @@ else
 fi
 
 
-export VERS_MDK=1.17.0
-export VERS_API=1.17.0
-export VERS_WORKER=1.17.0
-export VERS_PIWIND=1.17.0
+export VERS_MDK=1.18.0
+export VERS_API=1.18.0
+export VERS_WORKER=1.18.0
+export VERS_PIWIND=1.18.0
 export VERS_UI=1.9.0
 GIT_PIWIND=OasisPiWind
 
