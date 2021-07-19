@@ -7,41 +7,41 @@ Windows SQL server is no longer a strict requirement.
 The platform can be run via docker containers on a single machine or, if required, scaled up to run on a cluster.
 
 Docker support is the main requirement for running the platform.
-A Linux based installation is the main focus of this example deployment. 
-Running the install script from this repository automates install process of the OasisPlatform API v1, User Interface and example PiWind model. 
+A Linux based installation is the main focus of this example deployment.
+Running the install script from this repository automates install process of the OasisPlatform API v1, User Interface and example PiWind model.
 
 ## Install Prerequisites
 * Host operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
 * For this example we have used [Docker compose](https://docs.docker.com/compose/) which is required for running the install script.
 
-## Cloud Provisioning 
-PiWind is an example model and only requires a small to medium sized Instance for demonstration. 
-This of course will change depending on the size and complexity of the models hosted on the platform. 
+## Cloud Provisioning
+PiWind is an example model and only requires a small to medium sized Instance for demonstration.
+This of course will change depending on the size and complexity of the models hosted on the platform.
 
-* For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger 
-* To host on Azure use a *Standard_B2s* or larger instance 
-  
+* For running in AWS EC2 we recommend a a medium sized general purpose Instance such as *T2.medium* or larger
+* To host on Azure use a *Standard_B2s* or larger instance
+
 ## Installation Steps
 
 1) install git, docker and docker-compose
 
 For example on an Ubuntu/Debian based Linux system use:
 ```
-sudo apt update && sudo apt install git docker docker-compose 
+sudo apt update && sudo apt install git docker docker-compose
 ```
 
-2) Clone this repository 
+2) Clone this repository
 ```
-git clone https://github.com/OasisLMF/OasisEvaluation.git 
+git clone https://github.com/OasisLMF/OasisEvaluation.git
 cd OasisEvaluation
 ```
-3) Run the deployment script 
+3) Run the deployment script
 ```
 sudo ./install.sh
 ```
 > Note: sudo is not required if the Docker [post-install steps](https://docs.docker.com/install/linux/linux-postinstall/) are followed to run docker as a non-root user.
 
-#### Oasis Docker Components 
+#### Oasis Docker Components
 
 ![Oasis docker images](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_containers.png)
 
@@ -57,7 +57,7 @@ sudo ./install.sh
 |Datastore	            |File based datastore for exposure data, analysis results and model data.	|Docker volume|
 |Model Worker	          |Celery worker that can run a lookup or model execution task for a particular model version. The model data is attached to the container from the datastore at startup.	|Custom Python and C++ code|
 
-## Web interfaces 
+## Web interfaces
 On installation a single admin account is created which is used to access the following web interfaces.
 
 ```
@@ -65,7 +65,7 @@ User: admin
 Pass: password
 ```
 
-### [OasisUI Interface](http://localhost:8080/app/BFE_RShiny) - *localhost:8080/app/BFE_RShiny* 
+### [OasisUI Interface](http://localhost:8080/app/BFE_RShiny) - *localhost:8080/app/BFE_RShiny*
 ![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasisui.png)
 
 ### [API Swagger UI](http://localhost:8000/) - *localhost:8000*
@@ -82,27 +82,27 @@ Pass: password
 The Oasis platform supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard for importing exposure.
 Example files are available for the PiWind model:
 
-* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceLocOEDPiWind10.csv) --- Locations Data 10 rows
-* [SourceLocOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceLocOEDPiWind.csv) --- Locations Data
-* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceAccOEDPiWind.csv) --- Accounts Data
-* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceReinsInfoOEDPiWind.csv) --- Reinsurance Info 
-* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/data/SourceReinsScopeOEDPiWind.csv) --- Reinsurance Scope 
+* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceLocOEDPiWind10.csv) --- Locations Data 10 rows
+* [SourceLocOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceLocOEDPiWind.csv) --- Locations Data
+* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceAccOEDPiWind.csv) --- Accounts Data
+* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceReinsInfoOEDPiWind.csv) --- Reinsurance Info
+* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceReinsScopeOEDPiWind.csv) --- Reinsurance Scope
 
-## Troubleshooting 
+## Troubleshooting
 Feedback and error reports are invaluable for improving the stability and performance of the Oasis Platform, If you encounter an issue please consider [submitting an issue here](https://github.com/OasisLMF/OasisPlatform/issues)
 
-#### Viewing logs 
+#### Viewing logs
 
 `docker logs oasisplatform_worker_1`
 ```
 Generating losses
-[2019-02-13 17:48:44,166: INFO/ForkPoolWorker-1] 
+[2019-02-13 17:48:44,166: INFO/ForkPoolWorker-1]
 Switching CWD to /tmp/tmp3ddy2doi
 [2019-02-13 17:48:44,166: INFO/ForkPoolWorker-1] STARTED: oasislmf.model_execution.runner.run
 [2019-02-13 17:48:46,356: INFO/ForkPoolWorker-1] COMPLETED: oasislmf.model_execution.runner.run in 2.19s
-[2019-02-13 17:48:46,356: INFO/ForkPoolWorker-1] 
+[2019-02-13 17:48:46,356: INFO/ForkPoolWorker-1]
 Loss outputs generated in /tmp/tmp3ddy2doi/output
-[2019-02-13 17:48:46,356: INFO/ForkPoolWorker-1] 
+[2019-02-13 17:48:46,356: INFO/ForkPoolWorker-1]
 Finished loss generation (2.286 seconds)
 [2019-02-13 17:48:46,373: INFO/ForkPoolWorker-1] Output location = b05026a0ea1e4c2cbcc47bacab4af95b.tar
 [2019-02-13 17:48:46,373: INFO/ForkPoolWorker-1] COMPLETED: src.model_execution_worker.tasks.start_analysis in 2.31s
@@ -128,7 +128,7 @@ INFO 2019-02-14 12:15:07,339 generators 68 139841283544896 view <class 'src.serv
 [2019-02-14 11:23:40,777: INFO/MainProcess] mingle: all alone
 [2019-02-14 11:23:40,807: WARNING/MainProcess] /usr/local/lib/python3.6/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory leak, never use this setting in production environments!
   warnings.warn('Using settings.DEBUG leads to a memory leak, never '
-[2019-02-14 11:23:41,616: INFO/MainProcess] Received task: run_register_worker[21e8c3b5-116e-41d7-8a73-e0109796fb04]  
+[2019-02-14 11:23:41,616: INFO/MainProcess] Received task: run_register_worker[21e8c3b5-116e-41d7-8a73-e0109796fb04]
 /usr/local/lib/python3.6/site-packages/celery/platforms.py:795: RuntimeWarning: You're running the worker with superuser privileges: this is
 absolutely not recommended!
 
@@ -144,7 +144,7 @@ User information: uid=0 euid=0 gid=0 egid=0
 ```
 
 #### Checking that the containers are up
-                                            
+
 `docker ps -a`
 ```
 CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS                      PORTS                                                                                        NAMES
