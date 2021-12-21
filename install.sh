@@ -13,7 +13,7 @@ export VERS_MDK=1.23.0
 export VERS_API=1.23.0
 export VERS_WORKER=1.23.0
 export VERS_PIWIND=1.23.0
-export VERS_UI=1.11.0
+export VERS_UI=1.11.1
 GIT_PIWIND=OasisPiWind
 
 MSG=$(cat <<-END
