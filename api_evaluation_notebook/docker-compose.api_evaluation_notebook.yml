@@ -3,7 +3,10 @@ services:
   api_evaluation_notebook:
     build:
       context: .
-      dockerfile: Dockerfile.ApiEvaluationNotebook 
+      dockerfile: Dockerfile.ApiEvaluationNotebook
     network_mode: "host"
     environment:
       - JUPYTER_PASS=pass
+    volumne:
+      - ./OasisPiWind/tests/inputs:./data
+      - ./OasisPiWind/tests/analysis_settings.json./data/analysis_settings.json

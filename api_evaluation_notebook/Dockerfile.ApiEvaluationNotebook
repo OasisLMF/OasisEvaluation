@@ -1,8 +1,7 @@
-FROM coreoasis/model_worker:latest
+FROM coreoasis/model_worker:1.24.0-debian
 WORKDIR /home/run
 
 COPY ["./requirements.txt", \
-      "./data/*", \
       "./*.ipynb", "./"]
 RUN pip install -r requirements.txt
 RUN rm requirements.txt
