@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   api_evaluation_notebook:
     build:
@@ -7,6 +7,6 @@ services:
     network_mode: "host"
     environment:
       - JUPYTER_PASS=pass
-    volumne:
-      - ./OasisPiWind/tests/inputs:./data
-      - ./OasisPiWind/tests/analysis_settings.json./data/analysis_settings.json
+    volumes:
+      - ${PWD}/OasisPiWind/tests/inputs:/home/run/data
+      - ${PWD}/OasisPiWind/analysis_settings.json:/home/run/data/analysis_settings.json
