@@ -15,6 +15,7 @@ export VERS_WORKER=1.19.0
 export VERS_PIWIND=1.19.0
 export VERS_UI=1.9.0
 GIT_PIWIND=OasisPiWind
+API_CLIENT_DEMO='false'
 
 MSG=$(cat <<-END
 Do you want to install from a clean state, this is recomended when updating the release version.
@@ -35,7 +36,7 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
 
     if [[ "$WIPE" == 1 ]]; then
         set +e
-        docker-compose -f oasis-platform.yml down
+        docker-compose -f oasis-platform.yml -f oasis-ui-standalone.yml down
         set -e
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
@@ -63,17 +64,17 @@ fi
 
 cd $SCRIPT_DIR
 git checkout -- oasis-platform.yml
-git checkout -- oasis-ui.yml
+git checkout -- oasis-ui-standalone.yml
 
 # Run seds for OSX / Linux
 if $ENV_OSX; then
     sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
     sed -i "" "s|:latest|:${VERS_API}|g" oasis-platform.yml
-    sed -i "" "s|:latest|:${VERS_UI}|g" oasis-ui.yml
+    sed -i "" "s|:latest|:${VERS_UI}|g" oasis-ui-standalone.yml
 else
     sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}|g" oasis-platform.yml
     sed -i "s|:latest|:${VERS_API}|g" oasis-platform.yml
-    sed -i "s|:latest|:${VERS_UI}|g" oasis-ui.yml
+    sed -i "s|:latest|:${VERS_UI}|g" oasis-ui-standalone.yml
 fi
 
 set +e
@@ -84,26 +85,25 @@ docker network create shiny-net
 docker pull coreoasis/model_worker:${VERS_WORKER}
 docker pull coreoasis/api_server:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
-docker pull coreoasis/oasisui_proxy:$VERS_UI
+#docker pull coreoasis/oasisui_proxy:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
-docker-compose -f $SCRIPT_DIR/oasis-platform.yml up -d --no-build
-docker-compose -f $SCRIPT_DIR/oasis-ui.yml up -d
+docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
 
 
-# --- Run API eveluation notebook ------------------------------------------- #
-
-cd $SCRIPT_DIR
-git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-
-#### Run seds for OSX / Linux
-if $ENV_OSX; then
-    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-else
-    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-fi
-
-docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
-docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
+## --- Run API eveluation notebook ------------------------------------------- #
+#
+#cd $SCRIPT_DIR
+#git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+#
+##### Run seds for OSX / Linux
+#if $ENV_OSX; then
+#    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+#else
+#    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
+#fi
+#
+#docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
+#docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
