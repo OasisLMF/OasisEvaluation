@@ -9,16 +9,16 @@ else
 fi
 
 
-export VERS_MDK=1.26.0
-export VERS_API=1.26.0
-export VERS_WORKER=1.26.0
-export VERS_PIWIND=1.26.0
-export VERS_UI=1.11.3
+export VERS_MDK=1.26.3
+export VERS_API=1.26.3
+export VERS_WORKER=1.26.3
+export VERS_PIWIND=1.26.3
+export VERS_UI=1.11.4
 GIT_PIWIND=OasisPiWind
 API_CLIENT_DEMO='false'
 
 MSG=$(cat <<-END
-Do you want to install from a clean state, this is recomended when updating the release version.
+Do you want to reinstall?
 Note: This will wipe uploaded exposure and run data from the local API.
 END
 )
@@ -34,6 +34,9 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
         esac
     done
 
+    # stop oasisui_proxy if running 
+    docker-compose -f oasis-ui-proxy.yml down
+
     if [[ "$WIPE" == 1 ]]; then
         set +e
         docker-compose -f oasis-platform.yml -f oasis-ui-standalone.yml down
@@ -41,6 +44,11 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
         docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
+    else 
+        echo "-- Reinstall aborted -- "
+        exit 1
+        
+
     fi
 fi
 
