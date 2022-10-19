@@ -15,7 +15,6 @@ export VERS_WORKER=1.26.3
 export VERS_PIWIND=1.26.3
 export VERS_UI=1.11.4
 GIT_PIWIND=OasisPiWind
-API_CLIENT_DEMO='false'
 
 MSG=$(cat <<-END
 Do you want to reinstall?
