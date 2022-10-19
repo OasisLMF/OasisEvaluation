@@ -35,10 +35,11 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
 
     if [[ "$WIPE" == 1 ]]; then
         # stop oasisui_proxy if running 
-        docker-compose -f oasis-ui-proxy.yml down --remove-orphans
+        docker-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
+        docker-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
 
         set +e
-        docker-compose -f oasis-platform.yml -f oasis-ui-standalone.yml down --remove-orphans
+        docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
@@ -84,6 +85,7 @@ else
         sed -i "s|coreoasis/api_server:.*|coreoasis/api_server:latest|g" oasis-platform.yml
         sed -i "s|coreoasis/model_worker:.*|coreoasis/model_worker:latest|g" oasis-platform.yml
         sed -i "s|coreoasis/oasisui_app:.*|coreoasis/oasisui_app:latest|g" oasis-ui-standalone.yml
+    fi     
 fi     
 
 
