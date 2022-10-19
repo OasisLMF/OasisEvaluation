@@ -98,18 +98,4 @@ set -e
 docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
 
-
-## --- Run API eveluation notebook ------------------------------------------- #
-#
-#cd $SCRIPT_DIR
-#git checkout -- api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-#
-##### Run seds for OSX / Linux
-#if $ENV_OSX; then
-#    sed -i "" "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-#else
-#    sed -i "s|coreoasis/model_worker:latest|coreoasis/model_worker:${VERS_WORKER}-debian|g" api_evaluation_notebook/Dockerfile.ApiEvaluationNotebook
-#fi
-#
-#docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml build
-#docker-compose -f api_evaluation_notebook/docker-compose.api_evaluation_notebook.yml up -d
+# Wait poll for API running and prompt user 
