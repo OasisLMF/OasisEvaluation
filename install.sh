@@ -9,11 +9,11 @@ else
 fi
 
 
-export VERS_MDK=1.19.0
-export VERS_API=1.19.0
-export VERS_WORKER=1.19.0
-export VERS_PIWIND=1.19.0
-export VERS_UI=1.9.0
+export VERS_MDK=1.26.0
+export VERS_API=1.26.0
+export VERS_WORKER=1.26.0
+export VERS_PIWIND=1.26.0
+export VERS_UI=1.11.3
 GIT_PIWIND=OasisPiWind
 API_CLIENT_DEMO='false'
 

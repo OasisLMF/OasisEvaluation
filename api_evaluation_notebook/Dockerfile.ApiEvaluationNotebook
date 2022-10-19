@@ -2,7 +2,6 @@ FROM coreoasis/model_worker:latest
 WORKDIR /home/run
 
 COPY ["./requirements.txt", \
-      "./data/*", \
       "./*.ipynb", "./"]
 RUN pip install -r requirements.txt
 RUN rm requirements.txt
