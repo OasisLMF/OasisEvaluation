@@ -102,17 +102,13 @@ fi
 
 set +e
 docker-compose -f oasis-platform.yml pull
-docker network create shiny-net
 
 # Workaround for older docker-compose
 docker pull coreoasis/model_worker:${VERS_WORKER}
 docker pull coreoasis/api_server:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
-#docker pull coreoasis/oasisui_proxy:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
 docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
-
-# Wait poll for API running and prompt user 
