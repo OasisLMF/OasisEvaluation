@@ -28,13 +28,14 @@ services:
      - OASIS_SERVER_DB_PASS=oasis
      - OASIS_SERVER_DB_USER=oasis
      - OASIS_SERVER_DB_NAME=oasis
-     - OASIS_SERVER_DB_PORT=3306
-     - OASIS_CELERY_DB_ENGINE=db+mysql+pymysql
+     - OASIS_SERVER_DB_PORT=5432
+     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
+     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
      - OASIS_CELERY_DB_HOST=celery-db
      - OASIS_CELERY_DB_PASS=password
      - OASIS_CELERY_DB_USER=celery
      - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=3306
+     - OASIS_CELERY_DB_PORT=5432
      - STARTUP_RUN_MIGRATIONS=true
    volumes:
      - filestore-OasisData:/shared-fs:rw
@@ -56,13 +57,14 @@ services:
      - OASIS_SERVER_DB_PASS=oasis
      - OASIS_SERVER_DB_USER=oasis
      - OASIS_SERVER_DB_NAME=oasis
-     - OASIS_SERVER_DB_PORT=3306
-     - OASIS_CELERY_DB_ENGINE=db+mysql+pymysql
+     - OASIS_SERVER_DB_PORT=5432
+     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
+     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
      - OASIS_CELERY_DB_HOST=celery-db
      - OASIS_CELERY_DB_PASS=password
      - OASIS_CELERY_DB_USER=celery
      - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=3306
+     - OASIS_CELERY_DB_PORT=5432
    volumes:
      - filestore-OasisData:/shared-fs:rw
   worker:
@@ -82,40 +84,35 @@ services:
      - OASIS_RABBIT_PORT=5672
      - OASIS_RABBIT_USER=rabbit
      - OASIS_RABBIT_PASS=rabbit
-     - OASIS_CELERY_DB_ENGINE=db+mysql+pymysql
+     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
+     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
      - OASIS_CELERY_DB_HOST=celery-db
      - OASIS_CELERY_DB_PASS=password
      - OASIS_CELERY_DB_USER=celery
      - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=3306
+     - OASIS_CELERY_DB_PORT=5432
      - OASIS_MODEL_DATA_DIRECTORY=/home/worker/model
     volumes:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
   server-db:
     restart: always
-    image: mysql:8.0
-    command:
-      - --default-authentication-plugin=mysql_native_password
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_USER=oasis
-      - MYSQL_PASSWORD=oasis
-      - MYSQL_DATABASE=oasis
+      - POSTGRES_DB=oasis
+      - POSTGRES_USER=oasis
+      - POSTGRES_PASSWORD=oasis
     volumes:
-      - server-db-OasisData:/var/lib/mysql/:rw
+      - server-db-OasisData:/var/lib/postgresql/data:rw
   celery-db:
     restart: always
-    image: mysql
-    command:
-      - --default-authentication-plugin=mysql_native_password
+    image: postgres
     environment:
-      - MYSQL_ROOT_PASSWORD=password
-      - MYSQL_USER=celery
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=celery
+      - POSTGRES_DB=celery
+      - POSTGRES_USER=celery
+      - POSTGRES_PASSWORD=password
     volumes:
-      - celery-db-OasisData:/var/lib/mysql/:rw
+      - celery-db-OasisData:/var/lib/postgresql/data:rw
   rabbit:
     restart: always
     image: rabbitmq:3.8.14-management
