@@ -35,10 +35,11 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
 
     if [[ "$WIPE" == 1 ]]; then
         # stop oasisui_proxy if running 
-        docker-compose -f oasis-ui-proxy.yml down
+        docker-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
+        docker-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
 
         set +e
-        docker-compose -f oasis-platform.yml -f oasis-ui-standalone.yml down
+        docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
@@ -68,8 +69,25 @@ fi
 # --- RUN Oasis Platform & UI ----------------------------------------------- #
 
 cd $SCRIPT_DIR
-git checkout -- oasis-platform.yml
-git checkout -- oasis-ui-standalone.yml
+
+# check if this repo was downloaded as zip or cloned
+if git rev-parse --git-dir > /dev/null 2>&1; then
+    # if git, then reset the compose files
+    git checkout -- oasis-platform.yml
+    git checkout -- oasis-ui-standalone.yml
+else
+    # otherwise 'sed' the files to reset version tags  
+    if $ENV_OSX; then
+        sed -i "" "s|coreoasis/api_server:.*|coreoasis/api_server:latest|g" oasis-platform.yml
+        sed -i "" "s|coreoasis/model_worker:.*|coreoasis/model_worker:latest|g" oasis-platform.yml
+        sed -i "" "s|coreoasis/oasisui_app:.*|coreoasis/oasisui_app:latest|g" oasis-ui-standalone.yml
+    else    
+        sed -i "s|coreoasis/api_server:.*|coreoasis/api_server:latest|g" oasis-platform.yml
+        sed -i "s|coreoasis/model_worker:.*|coreoasis/model_worker:latest|g" oasis-platform.yml
+        sed -i "s|coreoasis/oasisui_app:.*|coreoasis/oasisui_app:latest|g" oasis-ui-standalone.yml
+    fi     
+fi     
+
 
 # Run seds for OSX / Linux
 if $ENV_OSX; then
@@ -84,17 +102,13 @@ fi
 
 set +e
 docker-compose -f oasis-platform.yml pull
-docker network create shiny-net
 
 # Workaround for older docker-compose
 docker pull coreoasis/model_worker:${VERS_WORKER}
 docker pull coreoasis/api_server:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
-#docker pull coreoasis/oasisui_proxy:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
 docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
-
-# Wait poll for API running and prompt user 
