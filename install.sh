@@ -34,10 +34,10 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
         esac
     done
 
-    # stop oasisui_proxy if running 
-    docker-compose -f oasis-ui-proxy.yml down
-
     if [[ "$WIPE" == 1 ]]; then
+        # stop oasisui_proxy if running 
+        docker-compose -f oasis-ui-proxy.yml down
+
         set +e
         docker-compose -f oasis-platform.yml -f oasis-ui-standalone.yml down
         set -e
@@ -47,8 +47,6 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
     else 
         echo "-- Reinstall aborted -- "
         exit 1
-        
-
     fi
 fi
 
