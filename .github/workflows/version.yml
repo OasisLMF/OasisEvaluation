@@ -38,10 +38,10 @@ on:
 
 
 env:
-  server_regex: 'export VERS_API='
-  worker_regex: 'export VERS_WORKER='
-  piwind_regex: 'export VERS_PIWIND='
-  oasisui_regex: 'export VERS_UI='
+  server_regex: 'export VERS_API'
+  worker_regex: 'export VERS_WORKER'
+  piwind_regex: 'export VERS_PIWIND'
+  oasisui_regex: 'export VERS_UI'
 
 
 jobs:
@@ -78,13 +78,11 @@ jobs:
     - name: Clone OasisEval 
       uses: actions/checkout@v3
       with:
+        fetch-depth: 0
         ref: ${{ github.git_ref }}
 
 
-    # --- Write new vers --- #
-
     - name: Setup github user
-      if: inputs.ktools_version != '' ||  inputs.oasislmf_version != ''
       run: |
         git config --global user.email ${{ env.GIT_EMAIL }}
         git config --global user.name ${{ env.GIT_USERNAME }}
@@ -92,6 +90,16 @@ jobs:
       env:
         GIT_EMAIL: ${{ secrets.BUILD_GIT_EMAIL }}
         GIT_USERNAME: ${{ secrets.BUILD_GIT_USERNAME }}
+
+    # --- Write new vers --- #
+    - name: Write versions
+      run: |
+        [ -z "${{ inputs.server_version }}" ] || sed -i '/${{ env.server_regex }}/c\${{ env.server_regex }}=${{ inputs.server_version }}' install.sh
+        [ -z "${{ inputs.worker_version }}" ] || sed -i '/${{ env.worker_regex }}/c\${{ env.worker_regex }}=${{ inputs.worker_version }}' install.sh
+        [ -z "${{ inputs.piwind_version }}" ] || sed -i '/${{ env.piwind_regex }}/c\${{ env.piwind_regex }}=${{ inputs.piwind_version }}' install.sh
+        [ -z "${{ inputs.oasisui_version }}" ] || sed -i '/${{ env.oasisui_regex }}/c\${{ env.oasisui_regex }}=${{ inputs.oasisui_version }}' install.sh
+        git add install.sh
+        [[ -z $(git status -s) ]] || git commit -m "Update OasisEvaluation Release"
 
     - name: Push
       if: |
