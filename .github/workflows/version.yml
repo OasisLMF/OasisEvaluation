@@ -1,0 +1,104 @@
+name: Update Oasis Versions 
+
+on: 
+  #push: # TESTING
+  workflow_dispatch:
+    inputs:
+      server_version:
+        description: 'Image tag for Oasis Server [Semvar]'
+        required: false
+      worker_version:
+        description: 'Image tag for Oasis Worker [Semvar]'
+        required: false
+      oasisui_version:
+        description: 'Image tag for Oasis UI [Semvar]'
+        required: false
+      piwind_ref:
+        description: 'Git Reference to load piwind with [tag, branch, commit]'
+        required: false
+
+  workflow_call:
+    inputs:
+      server_version:
+        description: 'Image tag for Oasis Server [Semvar]'
+        required: false
+        type: string
+      worker_version:
+        description: 'Image tag for Oasis Worker [Semvar]'
+        required: false
+        type: string
+      oasisui_version:
+        description: 'Image tag for Oasis UI [Semvar]'
+        required: false
+        type: string
+      piwind_ref:
+        description: 'Git Reference to load piwind with [tag, branch, commit]'
+        required: false
+        type: string
+
+
+env:
+  server_regex: 'export VERS_API='
+  worker_regex: 'export VERS_WORKER='
+  piwind_regex: 'export VERS_PIWIND='
+  oasisui_regex: 'export VERS_UI='
+
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Check for valid Semvar (server)
+      if: inputs.server_version
+      run: |
+        VALID=$(echo ${{ inputs.server_version }} | grep -oPc "^(\d+)\.(\d+)\.(\d+)$")
+        [[ "$VALID" -eq "1" ]] || exit 1        
+        
+    - name: Check for valid Semvar (worker)
+      if: inputs.worker_version
+      run: |
+        VALID=$(echo ${{ inputs.worker_version }} | grep -oPc "^(\d+)\.(\d+)\.(\d+)$")
+        [[ "$VALID" -eq "1" ]] || exit 1        
+
+    - name: Check for valid Semvar (ui)
+      if: inputs.oasisui_version
+      run: |
+        VALID=$(echo ${{ inputs.oasisui_version }} | grep -oPc "^(\d+)\.(\d+)\.(\d+)$")
+        [[ "$VALID" -eq "1" ]] || exit 1        
+      
+    - name: Try to clone PiWind Ref
+      if: inputs.piwind_ref
+      uses: actions/checkout@v3
+      with:
+        path: '/tmp/piwind'
+        repository: Oasislmf/OasisPiWind
+        ref: ${{ inputs.piwind_ref }}
+ 
+    - name: Clone OasisEval 
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.git_ref }}
+
+
+    # --- Write new vers --- #
+
+    - name: Setup github user
+      if: inputs.ktools_version != '' ||  inputs.oasislmf_version != ''
+      run: |
+        git config --global user.email ${{ env.GIT_EMAIL }}
+        git config --global user.name ${{ env.GIT_USERNAME }}
+        git config --global pull.ff only
+      env:
+        GIT_EMAIL: ${{ secrets.BUILD_GIT_EMAIL }}
+        GIT_USERNAME: ${{ secrets.BUILD_GIT_USERNAME }}
+
+    - name: Push
+      if: |
+        inputs.piwind_ref_version != '' ||
+        inputs.server_version != '' ||  
+        inputs.worker_version != '' ||
+        inputs.oasisui_version != ''
+      run: git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.BUILD_GIT_TOKEN }}
