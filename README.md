@@ -1,5 +1,10 @@
 <img src="https://oasislmf.org/packages/oasis_theme_package/themes/oasis_theme/assets/src/oasis-lmf-colour.png" alt="Oasis LMF logo" width="250"/>
 
+# Dummy README update
+
+-- new text here -- 
+
+
 # Oasis Platform Evaluation
 
 The Oasis Platform release now includes a full API for operating catastrophe models and a general consolidation of the platform architecture.
