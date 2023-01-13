@@ -9,11 +9,11 @@ else
 fi
 
 
-export VERS_MDK=1.26.3
-export VERS_API=1.26.3
-export VERS_WORKER=1.26.3
-export VERS_PIWIND=1.26.3
-export VERS_UI=1.11.4
+export VERS_MDK=1.27.0
+export VERS_API=1.27.0
+export VERS_WORKER=1.27.0
+export VERS_PIWIND=1.27.0
+export VERS_UI=1.11.5
 GIT_PIWIND=OasisPiWind
 
 MSG=$(cat <<-END
