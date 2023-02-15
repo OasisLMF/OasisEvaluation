@@ -12,7 +12,7 @@ fi
 export VERS_MDK=1.27.1
 export VERS_API=1.27.1
 export VERS_WORKER=1.27.1
-export VERS_PIWIND=1.27.1
+export VERS_PIWIND='backports/1.27.x'
 export VERS_UI=1.11.6
 GIT_PIWIND=OasisPiWind
 
@@ -24,7 +24,7 @@ END
 
 
 # Check for prev install and offer to clean wipe
-if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
+if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIND ]]; then
     while true; do read -r -n 1 -p "${MSG:-Continue?} [y/n]: " REPLY
         case $REPLY in
           [yY]) echo ; WIPE=1; break ;;
@@ -34,7 +34,7 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
     done
 
     if [[ "$WIPE" == 1 ]]; then
-        # stop oasisui_proxy if running 
+        # stop oasisui_proxy if running
         docker-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
         docker-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
 
@@ -44,7 +44,7 @@ if [ $(docker volume ls | grep OasisData -c) -gt 1 ]; then
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
         docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
-    else 
+    else
         echo "-- Reinstall aborted -- "
         exit 1
     fi
@@ -53,16 +53,10 @@ fi
 
 # --- Clone PiWind ---------------------------------------------------------- #
 
-if [ -d $SCRIPT_DIR/$GIT_PIWIND ]; then
-    cd $SCRIPT_DIR/$GIT_PIWIND
-    git stash
-    git fetch && git checkout $VERS_PIWIND
-else
-    mkdir -p $SCRIPT_DIR/$GIT_PIWIND
-    cd $SCRIPT_DIR/$GIT_PIWIND
-    git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
-    git checkout $VERS_PIWIND
-fi
+mkdir -p $SCRIPT_DIR/$GIT_PIWIND
+cd $SCRIPT_DIR/$GIT_PIWIND
+git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
+git checkout $VERS_PIWIND
 
 
 
@@ -76,17 +70,17 @@ if git rev-parse --git-dir > /dev/null 2>&1; then
     git checkout -- oasis-platform.yml
     git checkout -- oasis-ui-standalone.yml
 else
-    # otherwise 'sed' the files to reset version tags  
+    # otherwise 'sed' the files to reset version tags
     if $ENV_OSX; then
         sed -i "" "s|coreoasis/api_server:.*|coreoasis/api_server:latest|g" oasis-platform.yml
         sed -i "" "s|coreoasis/model_worker:.*|coreoasis/model_worker:latest|g" oasis-platform.yml
         sed -i "" "s|coreoasis/oasisui_app:.*|coreoasis/oasisui_app:latest|g" oasis-ui-standalone.yml
-    else    
+    else
         sed -i "s|coreoasis/api_server:.*|coreoasis/api_server:latest|g" oasis-platform.yml
         sed -i "s|coreoasis/model_worker:.*|coreoasis/model_worker:latest|g" oasis-platform.yml
         sed -i "s|coreoasis/oasisui_app:.*|coreoasis/oasisui_app:latest|g" oasis-ui-standalone.yml
-    fi     
-fi     
+    fi
+fi
 
 
 # Run seds for OSX / Linux
