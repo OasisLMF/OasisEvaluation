@@ -7,9 +7,6 @@ services:
   server:
    restart: always
    image: coreoasis/api_server:latest
-   build:
-     context: .
-     dockerfile: Dockerfile.api_server
    ports:
      - 8000:8000
    links:
@@ -70,9 +67,6 @@ services:
   worker:
     restart: always
     image: coreoasis/model_worker:latest
-    build:
-      context: .
-      dockerfile: Dockerfile.model_worker
     links:
      - celery-db
      - rabbit:myrabbit
