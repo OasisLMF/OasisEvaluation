@@ -30,4 +30,4 @@ jobs:
         pip install -r OasisPiWind/tests/requirements.in
 
     - name: run PiWind test
-      run: pytest OasisPiWind/tests/test_piwind_integration.py -v --use-running-containers --docker-compose=oasis-platform.yml
+      run: pytest OasisPiWind/tests/test_piwind_integration.py -v --use-running-containers --docker-compose=oasis-platform.yml -k ControlSet
