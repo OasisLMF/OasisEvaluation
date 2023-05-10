@@ -62,8 +62,8 @@ git checkout $VERS_PIWIND
 cd $SCRIPT_DIR
 
 set +e
-docker pull coreoasis/model_worker:${VERS_WORKER}
-docker pull coreoasis/api_server:${VERS_API}
+docker pull ${WORKER_IMG}:${VERS_WORKER}
+docker pull ${SERVER_IMG}:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
 set -e
 
