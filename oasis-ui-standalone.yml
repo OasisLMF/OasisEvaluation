@@ -2,7 +2,7 @@ version: '3'
 services:
   user-interface:
     restart: always
-    image: coreoasis/oasisui_app:latest
+    image: coreoasis/oasisui_app:${VERS_UI:-latest}
     container_name: oasisui_app
     environment:
      - API_IP=server
