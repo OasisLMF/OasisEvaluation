@@ -2,11 +2,11 @@ version: '3'
 volumes:
   server-db-OasisData:
   celery-db-OasisData:
-  filestore-OasisData: 
+  filestore-OasisData:
 services:
   server:
    restart: always
-   image: coreoasis/api_server:latest
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
    ports:
      - 8000:8000
    links:
@@ -15,7 +15,7 @@ services:
      - rabbit
    environment:
      - OASIS_ADMIN_USER=admin
-     - OASIS_ADMIN_PASS=password 
+     - OASIS_ADMIN_PASS=password
      - OASIS_DEBUG=1
      - OASIS_RABBIT_HOST=rabbit
      - OASIS_RABBIT_PORT=5672
@@ -38,7 +38,7 @@ services:
      - filestore-OasisData:/shared-fs:rw
   worker-monitor:
    restart: always
-   image: coreoasis/api_server:latest
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
    command: [wait-for-server, 'server:8000', celery, -A, src.server.oasisapi, worker, --loglevel=INFO]
    links:
      - server-db
@@ -66,7 +66,7 @@ services:
      - filestore-OasisData:/shared-fs:rw
   worker:
     restart: always
-    image: coreoasis/model_worker:latest
+    image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
     links:
      - celery-db
      - rabbit:myrabbit
@@ -116,17 +116,17 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-  flower:
-    restart: always
-    image: iserko/docker-celery-flower 
-    ports:
-      - 5555:5555
-    environment:
-      - CELERY_BROKER_URL=amqp://rabbit:rabbit@rabbit:5672
-    entrypoint:
-      - flower 
-      - --port=5555 
-      - --broker_api=http://rabbit:rabbit@rabbit:15672/api/
-    links:
-     - celery-db
-     - rabbit
+#  flower:
+#    restart: always
+#    image: iserko/docker-celery-flower
+#    ports:
+#      - 5555:5555
+#    environment:
+#      - CELERY_BROKER_URL=amqp://rabbit:rabbit@rabbit:5672
+#    entrypoint:
+#      - flower
+#      - --port=5555
+#      - --broker_api=http://rabbit:rabbit@rabbit:15672/api/
+#    links:
+#     - celery-db
+#     - rabbit
