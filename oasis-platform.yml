@@ -3,89 +3,154 @@ volumes:
   server-db-OasisData:
   celery-db-OasisData:
   filestore-OasisData:
+x-shared-env: &shared-env
+  OASIS_DEBUG: 1
+  OASIS_URL_SUB_PATH: 0
+  OASIS_CELERY_BROKER_URL: "amqp://rabbit:rabbit@broker:5672"
+  OASIS_SERVER_DB_HOST: server-db
+  OASIS_SERVER_DB_PASS: oasis
+  OASIS_SERVER_DB_USER: oasis
+  OASIS_SERVER_DB_NAME: oasis
+  OASIS_SERVER_DB_PORT: 5432
+  OASIS_SERVER_CHANNEL_LAYER_HOST: channel-layer
+  OASIS_SERVER_DB_ENGINE: django.db.backends.postgresql_psycopg2
+  OASIS_CELERY_DB_ENGINE: db+postgresql+psycopg2
+  OASIS_CELERY_DB_HOST: celery-db
+  OASIS_CELERY_DB_PASS: password
+  OASIS_CELERY_DB_USER: celery
+  OASIS_CELERY_DB_NAME: celery
+  OASIS_CELERY_DB_PORT: 5432
+  OASIS_INPUT_GENERATION_CONTROLLER_QUEUE: task-controller
+  OASIS_LOSSES_GENERATION_CONTROLLER_QUEUE: task-controller
+
+x-oasis-env-v1: &oasis-env-v1
+  OASIS_DEBUG: ${DEBUG:-0}
+  OASIS_RABBIT_HOST: broker
+  OASIS_RABBIT_PORT: 5672
+  OASIS_RABBIT_USER: rabbit
+  OASIS_RABBIT_PASS: rabbit
+  OASIS_CELERY_DB_ENGINE: db+postgresql+psycopg2
+  OASIS_CELERY_DB_HOST: celery-db
+  OASIS_CELERY_DB_PASS: password
+  OASIS_CELERY_DB_USER: celery
+  OASIS_CELERY_DB_NAME: celery
+  OASIS_CELERY_DB_PORT: 5432
+
+x-volumes: &shared-volumes
+  - filestore-OasisData:/shared-fs:rw
 services:
   server:
    restart: always
    image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
+   command: ["./wsgi/run-wsgi.sh"]
    ports:
      - 8000:8000
+     - 51970:51970
    links:
      - server-db
      - celery-db
-     - rabbit
+     - broker
    environment:
-     - OASIS_ADMIN_USER=admin
-     - OASIS_ADMIN_PASS=password
-     - OASIS_DEBUG=1
-     - OASIS_RABBIT_HOST=rabbit
-     - OASIS_RABBIT_PORT=5672
-     - OASIS_RABBIT_USER=rabbit
-     - OASIS_RABBIT_PASS=rabbit
-     - OASIS_SERVER_DB_HOST=server-db
-     - OASIS_SERVER_DB_PASS=oasis
-     - OASIS_SERVER_DB_USER=oasis
-     - OASIS_SERVER_DB_NAME=oasis
-     - OASIS_SERVER_DB_PORT=5432
-     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
-     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
-     - OASIS_CELERY_DB_HOST=celery-db
-     - OASIS_CELERY_DB_PASS=password
-     - OASIS_CELERY_DB_USER=celery
-     - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=5432
-     - STARTUP_RUN_MIGRATIONS=true
+     <<: *shared-env
+     STARTUP_RUN_MIGRATIONS: "true"
+     OASIS_ADMIN_USER: admin
+     OASIS_ADMIN_PASS: password
    volumes:
      - filestore-OasisData:/shared-fs:rw
-  worker-monitor:
+  server_websocket:
    restart: always
    image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
-   command: [wait-for-server, 'server:8000', celery, -A, src.server.oasisapi, worker, --loglevel=INFO]
+   command: ["./asgi/run-asgi.sh"]
    links:
      - server-db
      - celery-db
-     - rabbit
+     - broker
+   ports:
+     - 8001:8001
    environment:
-     - OASIS_DEBUG=1
-     - OASIS_RABBIT_HOST=rabbit
-     - OASIS_RABBIT_PORT=5672
-     - OASIS_RABBIT_USER=rabbit
-     - OASIS_RABBIT_PASS=rabbit
-     - OASIS_SERVER_DB_HOST=server-db
-     - OASIS_SERVER_DB_PASS=oasis
-     - OASIS_SERVER_DB_USER=oasis
-     - OASIS_SERVER_DB_NAME=oasis
-     - OASIS_SERVER_DB_PORT=5432
-     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
-     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
-     - OASIS_CELERY_DB_HOST=celery-db
-     - OASIS_CELERY_DB_PASS=password
-     - OASIS_CELERY_DB_USER=celery
-     - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=5432
+     <<: *shared-env
    volumes:
      - filestore-OasisData:/shared-fs:rw
-  worker:
+  v1-worker-monitor:
+   restart: always
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
+   command: [celery, -A, 'src.server.oasisapi.celery_app_v1', worker, --loglevel=INFO,]
+   links:
+     - server-db
+     - celery-db
+     - broker
+   environment:
+     <<: *shared-env
+   volumes:
+     - filestore-OasisData:/shared-fs:rw
+  v2-worker-monitor:
+   restart: always
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
+   command: [celery, -A, 'src.server.oasisapi.celery_app_v2', worker, --loglevel=INFO,  -Q, celery-v2]
+   links:
+     - server-db
+     - celery-db
+     - broker
+   environment:
+     <<: *shared-env
+   volumes:
+     - filestore-OasisData:/shared-fs:rw
+  v2-task-controller:
+   restart: always
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
+   command: [celery, -A, 'src.server.oasisapi.celery_app_v2', worker, --loglevel=INFO, -Q, task-controller]
+   links:
+     - server-db
+     - celery-db
+     - broker
+   environment:
+     <<: *shared-env
+   volumes:
+     - filestore-OasisData:/shared-fs:rw
+  celery-beat_v2:
+   restart: always
+   image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
+   command: [celery, -A, src.server.oasisapi.celery_app_v2, beat, --loglevel=INFO]
+   links:
+     - server-db
+     - celery-db
+     - broker
+   environment:
+     <<: *shared-env
+   volumes: *shared-volumes
+  v1-worker:
     restart: always
     image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.model_worker
     links:
      - celery-db
-     - rabbit:myrabbit
+     - broker:mybroker
     environment:
-     - OASIS_MODEL_SUPPLIER_ID=OasisLMF
-     - OASIS_MODEL_ID=PiWind
-     - OASIS_MODEL_VERSION_ID=1
-     - OASIS_RABBIT_HOST=rabbit
-     - OASIS_RABBIT_PORT=5672
-     - OASIS_RABBIT_USER=rabbit
-     - OASIS_RABBIT_PASS=rabbit
-     - OASIS_SERVER_DB_ENGINE=django.db.backends.postgresql_psycopg2
-     - OASIS_CELERY_DB_ENGINE=db+postgresql+psycopg2
-     - OASIS_CELERY_DB_HOST=celery-db
-     - OASIS_CELERY_DB_PASS=password
-     - OASIS_CELERY_DB_USER=celery
-     - OASIS_CELERY_DB_NAME=celery
-     - OASIS_CELERY_DB_PORT=5432
-     - OASIS_MODEL_DATA_DIRECTORY=/home/worker/model
+     <<: *shared-env
+     OASIS_MODEL_SUPPLIER_ID: OasisLMF
+     OASIS_MODEL_ID: PiWind
+     OASIS_MODEL_VERSION_ID: 'v1'
+     OASIS_RUN_MODE: v1
+    volumes:
+     - ./OasisPiWind/:/home/worker/model
+     - filestore-OasisData:/shared-fs:rw
+  v2-worker:
+    restart: always
+    image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.model_worker
+    links:
+     - celery-db
+     - broker:mybroker
+    environment:
+     <<: *shared-env
+     OASIS_MODEL_SUPPLIER_ID: OasisLMF
+     OASIS_MODEL_ID: PiWind
+     OASIS_MODEL_VERSION_ID: 'v2'
+     OASIS_RUN_MODE: v2
     volumes:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
@@ -98,6 +163,8 @@ services:
       - POSTGRES_PASSWORD=oasis
     volumes:
       - server-db-OasisData:/var/lib/postgresql/data:rw
+    ports:
+      - 33307:3306
   celery-db:
     restart: always
     image: postgres
@@ -107,7 +174,9 @@ services:
       - POSTGRES_PASSWORD=password
     volumes:
       - celery-db-OasisData:/var/lib/postgresql/data:rw
-  rabbit:
+    ports:
+      - 33306:5432
+  broker:
     restart: always
     image: rabbitmq:3.8.14-management
     environment:
@@ -116,17 +185,8 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
-#  flower:
-#    restart: always
-#    image: iserko/docker-celery-flower
-#    ports:
-#      - 5555:5555
-#    environment:
-#      - CELERY_BROKER_URL=amqp://rabbit:rabbit@rabbit:5672
-#    entrypoint:
-#      - flower
-#      - --port=5555
-#      - --broker_api=http://rabbit:rabbit@rabbit:15672/api/
-#    links:
-#     - celery-db
-#     - rabbit
+  channel-layer:
+    restart: always
+    image: redis:5.0.7
+    ports:
+      - 6379:6379

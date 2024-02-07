@@ -4,7 +4,7 @@ services:
    restart: always
    image: portainer/portainer:latest
    ports:
-     - 8001:8001
+     - 8002:8002
      - 9000:9000
    volumes:
      - /var/run/docker.sock:/var/run/docker.sock
