@@ -43,7 +43,7 @@ sudo ./install.sh
 
 #### Oasis Docker Components
 
-![Oasis docker images](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_containers.png)
+![Oasis docker images](https://github.com/OasisLMF/OasisEvaluation/raw/main/.img/oasis_containers.png)
 
 |Component              |Description         |Technology  |
 | ---------------------:| ------------------:| ----------:|
@@ -66,27 +66,33 @@ Pass: password
 ```
 
 ### [OasisUI Interface](http://localhost:8080/) - *localhost:8080/*
-![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasisui.png)
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/main/.img/oasisui.png)
 
-### [API Swagger UI](http://localhost:8000/) - *localhost:8000*
-![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/api_swagger.png)
+
+### [API Swagger UI - All](http://localhost:8000/) - *localhost:8000*
+### [API Swagger UI - V1](http://localhost:8000/v1/) - *localhost:8000/v1/*
+### [API Swagger UI - V2](http://localhost:8000/v2/) - *localhost:8000/v2/*
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/main/.img/api_swagger.png)
+
+
+
 
 ### [API Admin Panel](http://localhost:8000/admin) - *localhost:8000/admin*
-![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/admin_panel.png)
+![alt text](https://github.com/OasisLMF/OasisEvaluation/raw/main/.img/admin_panel.png)
 
 ### [Portainer Docker Panel](http://localhost:9000) - *localhost:9000*
-![alt text](https://github.com/OasisLMF/OasisAtScaleEvaluation/raw/master/.img/portainer.png)
+![alt text](https://github.com/OasisLMF/OasisAtScaleEvaluation/raw/main/.img/portainer.png)
 
 ## Exposure inputs
 
 The Oasis platform supports the [Open Exposure Data (OED)](https://github.com/Simplitium/OED) standard for importing exposure.
 Example files are available for the PiWind model:
 
-* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceLocOEDPiWind10.csv) --- Locations Data 10 rows
-* [SourceLocOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceLocOEDPiWind.csv) --- Locations Data
-* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceAccOEDPiWind.csv) --- Accounts Data
-* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceReinsInfoOEDPiWind.csv) --- Reinsurance Info
-* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/master/tests/inputs/SourceReinsScopeOEDPiWind.csv) --- Reinsurance Scope
+* [SourceLocOEDPiWind10.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/main/tests/inputs/SourceLocOEDPiWind10.csv) --- Locations Data 10 rows
+* [SourceLocOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/main/tests/inputs/SourceLocOEDPiWind.csv) --- Locations Data
+* [SourceAccOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/main/tests/inputs/SourceAccOEDPiWind.csv) --- Accounts Data
+* [SourceReinsInfoOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/main/tests/inputs/SourceReinsInfoOEDPiWind.csv) --- Reinsurance Info
+* [SourceReinsScopeOEDPiWind.csv](https://raw.githubusercontent.com/OasisLMF/OasisPiWind/main/tests/inputs/SourceReinsScopeOEDPiWind.csv) --- Reinsurance Scope
 
 ## Troubleshooting
 Feedback and error reports are invaluable for improving the stability and performance of the Oasis Platform, If you encounter an issue please consider [submitting an issue here](https://github.com/OasisLMF/OasisPlatform/issues)
@@ -169,6 +175,6 @@ This evaluation also includes a Jupyter notebook that accesses the API using the
 
 The following sequence diagram illustrates how the general steps in the analysis, encapulated by the API client functions, map to specific API calls.
 
-![Oasis API sequence](https://github.com/OasisLMF/OasisEvaluation/raw/master/.img/oasis_api_sequence.png)
+![Oasis API sequence](https://github.com/OasisLMF/OasisEvaluation/raw/main/.img/oasis_api_sequence.png)
 
 
