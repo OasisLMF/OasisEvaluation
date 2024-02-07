@@ -32,4 +32,4 @@ jobs:
     - name: run PiWind test
       run: pytest OasisPiWind/tests/test_piwind_integration.py -v --use-running-containers --docker-compose=oasis-platform.yml -k all_outputs
       env:
-        WORKER_API_VER: 'v2'
+        WORKER_API_VER: 'v1'
