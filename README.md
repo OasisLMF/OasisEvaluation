@@ -8,7 +8,7 @@ The platform can be run via docker containers on a single machine or, if require
 
 Docker support is the main requirement for running the platform.
 A Linux based installation is the main focus of this example deployment.
-Running the install script from this repository automates install process of the OasisPlatform API v1, User Interface and example PiWind model.
+Running the install script from this repository automates install process of the OasisPlatform API v2, User Interface and example PiWind model.
 
 ## Install Prerequisites
 * Host operating system with docker support, see [Docker compatibility matrix](https://success.docker.com/article/compatibility-matrix).
