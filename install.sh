@@ -3,9 +3,9 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_MDK=2.3.4
-export VERS_API=2.3.4
-export VERS_WORKER=2.3.4
+export VERS_MDK=2.3.5
+export VERS_API=2.3.5
+export VERS_WORKER=2.3.5
 export VERS_UI=1.11.7
 export VERS_PIWIND='stable/2.3.x'
 
