@@ -32,11 +32,11 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
 
     if [[ "$WIPE" == 1 ]]; then
         # stop oasisui_proxy if running
-        docker-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
-        docker-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
+        docker compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
+        docker compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
 
         set +e
-        docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
+        docker compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
@@ -68,5 +68,5 @@ docker pull coreoasis/oasisui_app:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
-docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
-docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
+docker compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
+docker compose -f $SCRIPT_DIR/portainer.yaml up -d
