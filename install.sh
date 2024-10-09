@@ -12,6 +12,7 @@ export VERS_PIWIND='stable/2.3.x'
 export SERVER_IMG=coreoasis/api_server
 export WORKER_IMG=coreoasis/model_worker
 export GIT_PIWIND=OasisPiWind
+export DOCKER_BIN=$(command -v podman >/dev/null 2>&1 && echo "podman" || echo "docker")
 
 MSG=$(cat <<-END
 Do you want to reinstall?
@@ -32,15 +33,15 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
 
     if [[ "$WIPE" == 1 ]]; then
         # stop oasisui_proxy if running
-        docker-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
-        docker-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
+        $DOCKER_BIN-compose -f $SCRIPT_DIR/oasis-ui-proxy.yml down --remove-orphans
+        $DOCKER_BIN-compose -f $SCRIPT_DIR/portainer.yaml down --remove-orphans
 
         set +e
-        docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
+        $DOCKER_BIN-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
         rm -rf $SCRIPT_DIR/$GIT_PIWIND
-        docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
+        $DOCKER_BIN volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r $DOCKER_BIN volume rm
     else
         echo "-- Reinstall aborted -- "
         exit 1
@@ -62,11 +63,11 @@ git checkout $VERS_PIWIND
 cd $SCRIPT_DIR
 
 set +e
-docker pull ${WORKER_IMG}:${VERS_WORKER}
-docker pull ${SERVER_IMG}:${VERS_API}
-docker pull coreoasis/oasisui_app:$VERS_UI
+$DOCKER_BIN pull ${WORKER_IMG}:${VERS_WORKER}
+$DOCKER_BIN pull ${SERVER_IMG}:${VERS_API}
+$DOCKER_BIN pull coreoasis/oasisui_app:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
-docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
-docker-compose -f $SCRIPT_DIR/portainer.yaml up -d
+$DOCKER_BIN-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
+# $DOCKER_BIN-compose -f $SCRIPT_DIR/portainer.yaml up -d
