@@ -1,0 +1,13 @@
+FROM coreoasis/api_server:2.3.9
+
+USER root 
+RUN apt-get update && apt-get -y install git python3-pip && rm -rf /var/lib/apt/lists/*
+USER server
+
+# Install ODS-Tools from git branch (Optional) 'docker build --build-arg ods_tools_branch=develop'
+ARG ods_tools_branch
+RUN if [ ! -z "$ods_tools_branch" ] ; then \
+    apt update && apt install -y git; \
+    pip uninstall ods-tools -y; \
+    pip install --user --no-warn-script-location -v git+https://git@github.com/OasisLMF/ODS_Tools.git@${ods_tools_branch}#egg=ods-tools; \
+  fi

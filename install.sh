@@ -3,9 +3,9 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_MDK=2.3.5
-export VERS_API=2.3.5
-export VERS_WORKER=2.3.5
+export VERS_MDK=2.3.9
+export VERS_API='oed-4-dev'
+export VERS_WORKER='oed-4-dev'
 export VERS_UI=1.11.7
 export VERS_PIWIND='stable/2.3.x'
 
@@ -39,7 +39,7 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
         docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
-        rm -rf $SCRIPT_DIR/$GIT_PIWIND
+        #rm -rf $SCRIPT_DIR/$GIT_PIWIND
         docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
     else
         echo "-- Reinstall aborted -- "
@@ -48,12 +48,12 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
 fi
 
 
-# --- Clone PiWind ---------------------------------------------------------- #
-
-mkdir -p $SCRIPT_DIR/$GIT_PIWIND
-cd $SCRIPT_DIR/$GIT_PIWIND
-git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
-git checkout $VERS_PIWIND
+## --- Clone PiWind ---------------------------------------------------------- #
+#
+#mkdir -p $SCRIPT_DIR/$GIT_PIWIND
+#cd $SCRIPT_DIR/$GIT_PIWIND
+#git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
+#git checkout $VERS_PIWIND
 
 
 
@@ -62,9 +62,8 @@ git checkout $VERS_PIWIND
 cd $SCRIPT_DIR
 
 set +e
-docker pull ${WORKER_IMG}:${VERS_WORKER}
-docker pull ${SERVER_IMG}:${VERS_API}
 docker pull coreoasis/oasisui_app:$VERS_UI
+./build.sh
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
