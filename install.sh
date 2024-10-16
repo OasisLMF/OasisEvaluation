@@ -39,7 +39,7 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
         docker-compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml down --remove-orphans
         set -e
         printf "Deleting docker data: \n"
-        #rm -rf $SCRIPT_DIR/$GIT_PIWIND
+        rm -rf $SCRIPT_DIR/$GIT_PIWIND
         docker volume ls | grep OasisData | awk 'BEGIN { FS = "[ \t\n]+" }{ print $2 }' | xargs -r docker volume rm
     else
         echo "-- Reinstall aborted -- "
@@ -48,12 +48,12 @@ if [[ $(docker volume ls | grep OasisData -c) -gt 1 || -d $SCRIPT_DIR/$GIT_PIWIN
 fi
 
 
-## --- Clone PiWind ---------------------------------------------------------- #
-#
-#mkdir -p $SCRIPT_DIR/$GIT_PIWIND
-#cd $SCRIPT_DIR/$GIT_PIWIND
-#git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
-#git checkout $VERS_PIWIND
+# --- Clone PiWind ---------------------------------------------------------- #
+
+mkdir -p $SCRIPT_DIR/$GIT_PIWIND
+cd $SCRIPT_DIR/$GIT_PIWIND
+git clone --depth 1 --branch $VERS_PIWIND https://github.com/OasisLMF/$GIT_PIWIND.git .
+git checkout $VERS_PIWIND
 
 
 
