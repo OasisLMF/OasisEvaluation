@@ -136,6 +136,8 @@ services:
     volumes:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
+    security_opt:
+     - label:disable 
   v2-worker:
     restart: always
     image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
@@ -154,6 +156,8 @@ services:
     volumes:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
+    security_opt:
+     - label:disable 
   server-db:
     restart: always
     image: postgres
