@@ -118,6 +118,20 @@ services:
    environment:
      <<: *shared-env
    volumes: *shared-volumes
+  internal-worker:
+    restart: always
+    image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.model_worker
+    links:
+     - celery-db
+     - broker:mybroker
+    environment:
+     <<: *shared-env
+     OASIS_RUN_MODE: server-internal
+    volumes:
+     - filestore-OasisData:/shared-fs:rw
   v1-worker:
     restart: always
     image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
@@ -137,7 +151,7 @@ services:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
     security_opt:
-     - label:disable 
+     - label:disable
   v2-worker:
     restart: always
     image: ${WORKER_IMG:-coreoasis/model_worker}:${VERS_WORKER:-latest}
@@ -157,7 +171,7 @@ services:
      - ./OasisPiWind/:/home/worker/model
      - filestore-OasisData:/shared-fs:rw
     security_opt:
-     - label:disable 
+     - label:disable
   server-db:
     restart: always
     image: postgres
