@@ -22,6 +22,8 @@ x-shared-env: &shared-env
   OASIS_CELERY_DB_PORT: 5432
   OASIS_INPUT_GENERATION_CONTROLLER_QUEUE: task-controller
   OASIS_LOSSES_GENERATION_CONTROLLER_QUEUE: task-controller
+  OASIS_WEBSOCKET_PORT: 8001
+  OASIS_WEBSOCKET_URL: ws://server-websocket
 
 x-oasis-env-v1: &oasis-env-v1
   OASIS_DEBUG: ${DEBUG:-0}
@@ -57,7 +59,7 @@ services:
      OASIS_ADMIN_PASS: password
    volumes:
      - filestore-OasisData:/shared-fs:rw
-  server_websocket:
+  server-websocket:
    restart: always
    image: ${SERVER_IMG:-coreoasis/api_server}:${VERS_API:-latest}
    command: ["./asgi/run-asgi.sh"]
