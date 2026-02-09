@@ -3,11 +3,11 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_MDK=2.4.9
-export VERS_API=2.4.9
-export VERS_WORKER=2.4.9
-export VERS_UI=1.12.0
-export VERS_PIWIND='stable/2.4.x'
+export VERS_MDK=2.5.0
+export VERS_API=2.5.0
+export VERS_WORKER=2.5.0
+export VERS_UI=2.0.0
+export VERS_PIWIND='stable/2.5.x'
 
 export SERVER_IMG=coreoasis/api_server
 export WORKER_IMG=coreoasis/model_worker
