@@ -9,6 +9,7 @@ services:
      - API_PORT=8000
      - API_VERSION=v2
      - API_SHARE_FILEPATH=./downloads
+     - API_AUTH_TYPE=simple
      - OASIS_ENVIRONMENT=oasis_localhost
     ports:
      - 8080:3838
