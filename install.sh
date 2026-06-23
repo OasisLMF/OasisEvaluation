@@ -3,9 +3,9 @@ set -e
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-export VERS_MDK=2.5.3
-export VERS_API=2.5.3
-export VERS_WORKER=2.5.3
+export VERS_MDK=2.5.4
+export VERS_API=2.5.4
+export VERS_WORKER=2.5.4
 export VERS_UI=2.0.1
 export VERS_PIWIND='stable/2.5.x'
 
@@ -68,5 +68,5 @@ docker pull coreoasis/oasisui_app:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
-docker compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
+docker compose -f $SCRIPT_DIR/oasis-platform-mysql.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker compose -f $SCRIPT_DIR/portainer.yaml up -d
