@@ -68,5 +68,5 @@ docker pull coreoasis/oasisui_app:$VERS_UI
 set -e
 
 # RUN OasisPlatform / OasisUI / Portainer
-docker compose -f $SCRIPT_DIR/oasis-platform.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
+docker compose -f $SCRIPT_DIR/oasis-platform-mysql.yml -f $SCRIPT_DIR/oasis-ui-standalone.yml up -d --no-build
 docker compose -f $SCRIPT_DIR/portainer.yaml up -d
